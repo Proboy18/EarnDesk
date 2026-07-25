@@ -19,6 +19,13 @@
             max-width: 400px;
             margin: auto;
         }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
         button {
             background-color: #007bff;
             color: white;
@@ -27,7 +34,12 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        #logout-btn {
+            background-color: #dc3545;
+            display: none;
         }
     </style>
 </head>
@@ -35,10 +47,68 @@
 
     <div class="container">
         <h1>Welcome to EarnDesk!</h1>
-        <p>Your task-earning website is almost ready.</p>
-        <p>Current Balance: <strong>0 Points</strong></p>
-        <button>Login to Earn</button>
+        <div id="auth-section">
+            <p>Sign in to start earning points.</p>
+            <input type="email" id="email" placeholder="Enter email">
+            <input type="password" id="password" placeholder="Enter password">
+            <button onclick="register()">Sign Up</button>
+            <button onclick="login()" style="background-color: #28a745;">Login</button>
+        </div>
+
+        <div id="dashboard-section" style="display: none;">
+            <p>Welcome, <span id="user-email"></span>!</p>
+            <p>Current Balance: <strong id="balance">0 Points</strong></p>
+            <button id="logout-btn" onclick="logout()">Logout</button>
+        </div>
     </div>
 
+    <!-- Firebase SDK Scripts -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBj2UGAr1gGgxfF89_vxgSE2DGFHuzdFxA",
+            authDomain: "earndesk-cb89a.firebaseapp.com",
+            projectId: "earndesk-cb89a",
+            storageBucket: "earndesk-cb89a.firebasestorage.app",
+            messagingSenderId: "1055418624977",
+            appId: "1:1055418624977:web:edda1cd8076ec113d74ef0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.register = function() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            createUserWithEmailAndPassword(auth, email, password)
+                .catch((error) => { alert(error.message); });
+        }
+
+        window.login = function() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            signInWithEmailAndPassword(auth, email, password)
+                .catch((error) => { alert(error.message); });
+        }
+
+        window.logout = function() {
+            signOut(auth);
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('auth-section').style.display = 'none';
+                document.getElementById('dashboard-section').style.display = 'block';
+                document.getElementById('logout-btn').style.display = 'block';
+                document.getElementById('user-email').innerText = user.email;
+            } else {
+                document.getElementById('auth-section').style.display = 'block';
+                document.getElementById('dashboard-section').style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
+
