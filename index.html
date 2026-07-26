@@ -8,71 +8,90 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f7f6;
-            text-align: center;
-            padding: 50px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
         }
         .container {
             background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            max-width: 420px;
-            margin: auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 650px; /* Made bigger and wider */
+            box-sizing: border-box;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
         }
         input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
+            width: 100%;
+            padding: 14px;
+            margin: 12px 0;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
         }
         button {
             background-color: #007bff;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 14px 20px;
+            border-radius: 6px;
             font-size: 16px;
             cursor: pointer;
             margin-top: 10px;
             width: 100%;
         }
+        button:hover {
+            opacity: 0.9;
+        }
         #logout-btn {
             background-color: #dc3545;
+            margin-top: 30px;
         }
-        .nav-link {
-            display: inline-block;
-            margin: 10px 0 20px 0;
-            background-color: #007bff; /* Changed to blue box */
+        .nav-btn {
+            display: block;
+            width: 100%;
+            margin: 20px 0;
+            background-color: #007bff; 
             color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
+            padding: 14px 0;
+            border-radius: 6px;
+            border: none;
             font-size: 16px;
-            width: 85%;
+            cursor: pointer;
         }
         .streak-box {
-            background-color: #e9ecef;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 15px 0;
-            scroll-margin-top: 20px;
+            display: none; 
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
         }
-        /* Streak Grid Table */
         .streak-grid {
             display: flex;
             justify-content: space-between;
-            gap: 4px;
-            margin: 15px 0;
+            gap: 8px;
+            margin: 20px 0;
             overflow-x: auto;
         }
         .streak-day {
             background: #fff;
             border: 1px solid #ccc;
-            border-radius: 4px;
-            padding: 6px 2px;
+            border-radius: 6px;
+            padding: 12px 6px;
             flex: 1;
-            font-size: 11px;
+            font-size: 13px;
             text-align: center;
         }
         .streak-day.active {
@@ -85,7 +104,7 @@
 <body>
 
     <div class="container">
-        <h1>EarnDesk Dashboard</h1>
+        <h1>Dashboard</h1>
         <div id="auth-section">
             <p>Sign in to start earning cash.</p>
             <input type="email" id="email" placeholder="Enter email">
@@ -95,16 +114,14 @@
         </div>
 
         <div id="dashboard-section" style="display: none;">
-            <p>Welcome, <span id="user-email"></span>!</p>
-            <p>Current Balance: <strong id="balance">$0.00</strong></p>
+            <p style="font-size: 18px;">Welcome, <span id="user-email"></span>!</p>
+            <p style="font-size: 20px;">Current Balance: <strong id="balance" style="color: #28a745;">$0.00</strong></p>
             
-            <!-- Blue box button with text "Daily reward" -->
-            <a href="#reward-section" class="nav-link">🎁 Daily reward</a>
+            <button class="nav-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
 
             <div class="streak-box" id="reward-section">
-                <p>🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
+                <p style="font-size: 16px;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
                 
-                <!-- 1 to 7 Days visual reward table -->
                 <div class="streak-grid" id="streak-grid-container">
                     <div class="streak-day" id="day-1">1d<br>$0.01</div>
                     <div class="streak-day" id="day-2">2d<br>$0.02</div>
@@ -115,8 +132,8 @@
                     <div class="streak-day" id="day-7">7d<br>$0.07</div>
                 </div>
 
-                <p id="streak-status">Checking status...</p>
-                <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none;">Claim Daily Reward!</button>
+                <p id="streak-status" style="margin: 15px 0; font-weight: 500;">Checking status...</p>
+                <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none; font-weight: bold;">Claim Daily Reward!</button>
             </div>
 
             <button id="logout-btn" onclick="logout()">Logout</button>
@@ -170,6 +187,15 @@
             signOut(auth);
         }
 
+        window.toggleRewardBox = function() {
+            const rewardBox = document.getElementById('reward-section');
+            if (rewardBox.style.display === 'block') {
+                rewardBox.style.display = 'none';
+            } else {
+                rewardBox.style.display = 'block';
+            }
+        }
+
         function getTodayDate() {
             return new Date().toISOString().split('T')[0];
         }
@@ -192,7 +218,6 @@
                 document.getElementById('balance').innerText = "$" + currentBalance.toFixed(2);
                 document.getElementById('streak-count').innerText = currentStreak;
 
-                // Highlight active/current streak day in the grid
                 for (let i = 1; i <= 7; i++) {
                     const dayBox = document.getElementById(`day-${i}`);
                     if (dayBox) {
