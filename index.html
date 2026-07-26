@@ -40,14 +40,20 @@
         #logout-btn {
             background-color: #dc3545;
         }
+        .streak-box {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Welcome to EarnDesk!</h1>
+        <h1>EarnDesk Dashboard</h1>
         <div id="auth-section">
-            <p>Sign in to start earning points.</p>
+            <p>Sign in to start earning cash.</p>
             <input type="email" id="email" placeholder="Enter email">
             <input type="password" id="password" placeholder="Enter password">
             <button onclick="register()">Sign Up</button>
@@ -56,8 +62,14 @@
 
         <div id="dashboard-section" style="display: none;">
             <p>Welcome, <span id="user-email"></span>!</p>
-            <p>Current Balance: <strong id="balance">0 Points</strong></p>
-            <button onclick="addBonusPoints()" style="background-color: #ffc107; color: black;">Earn 10 Bonus Points!</button>
+            <p>Current Balance: <strong id="balance">$0.00</strong></p>
+            
+            <div class="streak-box">
+                <p>🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
+                <p id="streak-status">Checking status...</p>
+                <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none;">Claim Daily Reward!</button>
+            </div>
+
             <button id="logout-btn" onclick="logout()">Logout</button>
         </div>
     </div>
@@ -87,10 +99,11 @@
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-                // Create a user document in Firestore with 0 points
                 await setDoc(doc(db, "users", user.uid), {
                     email: user.email,
-                    points: 0
+                    balance: 0.00,
+                    streak: 0,
+                    lastLoginDate: ""
                 });
             } catch (error) {
                 alert(error.message);
@@ -108,32 +121,89 @@
             signOut(auth);
         }
 
-        // Function to test earning points
-        window.addBonusPoints = async function() {
-            const user = auth.currentUser;
-            if (user) {
-                const userRef = doc(db, "users", user.uid);
-                await updateDoc(userRef, {
-                    points: increment(10)
-                });
-                fetchUserData(user); // Refresh points on screen
-            }
+        function getTodayDate() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function getYesterdayDate() {
+            const date = new Date();
+            date.setDate(date.getDate() - 1);
+            return date.toISOString().split('T')[0];
         }
 
         async function fetchUserData(user) {
             const docRef = doc(db, "users", user.uid);
             const docSnap = await getDoc(docRef);
+            
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                document.getElementById('balance').innerText = data.points + " Points";
+                const currentBalance = data.balance || 0;
+                document.getElementById('balance').innerText = "$" + currentBalance.toFixed(2);
+                document.getElementById('streak-count').innerText = data.streak || 0;
+
+                const today = getTodayDate();
+                const yesterday = getYesterdayDate();
+                const lastLogin = data.lastLoginDate || "";
+
+                const claimBtn = document.getElementById('claim-btn');
+                const streakStatus = document.getElementById('streak-status');
+
+                if (lastLogin === today) {
+                    claimBtn.style.display = 'none';
+                    streakStatus.innerText = "Reward claimed for today! Come back tomorrow.";
+                } else {
+                    claimBtn.style.display = 'block';
+                    if (lastLogin === yesterday) {
+                        streakStatus.innerText = "Keep your streak going to earn more cash!";
+                    } else if (lastLogin !== "") {
+                        streakStatus.innerText = "Streak reset because you missed a day!";
+                    } else {
+                        streakStatus.innerText = "Claim your first daily reward!";
+                    }
+                }
             } else {
-                // If the user was created before we added the database, give them a starting document
                 await setDoc(docRef, {
                     email: user.email,
-                    points: 0
+                    balance: 0.00,
+                    streak: 0,
+                    lastLoginDate: ""
                 });
-                document.getElementById('balance').innerText = "0 Points";
+                fetchUserData(user);
             }
+        }
+
+        window.claimDailyReward = async function() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            const docRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (!docSnap.exists()) return;
+
+            const data = docSnap.data();
+            const today = getTodayDate();
+            const yesterday = getYesterdayDate();
+            const lastLogin = data.lastLoginDate || "";
+
+            let newStreak = 1;
+            if (lastLogin === yesterday) {
+                newStreak = (data.streak || 0) + 1;
+                if (newStreak > 7) {
+                    newStreak = 1; 
+                }
+            }
+
+            // Balanced reward calculation: Day 1 = $0.01, Day 7 = $0.07
+            const cashEarned = newStreak * 0.01;
+
+            await updateDoc(docRef, {
+                balance: increment(cashEarned),
+                streak: newStreak,
+                lastLoginDate: today
+            });
+
+            alert(`Successfully claimed Day ${newStreak} reward: $${cashEarned.toFixed(2)}!`);
+            fetchUserData(user);
         }
 
         onAuthStateChanged(auth, (user) => {
@@ -141,7 +211,7 @@
                 document.getElementById('auth-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
                 document.getElementById('user-email').innerText = user.email;
-                fetchUserData(user); // Load points from Firestore
+                fetchUserData(user);
             } else {
                 document.getElementById('auth-section').style.display = 'block';
                 document.getElementById('dashboard-section').style.display = 'none';
@@ -150,4 +220,3 @@
     </script>
 </body>
 </html>
-
