@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             background-color: #f4f7f6;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -17,23 +17,23 @@
         }
         .container {
             background-color: white;
-            padding: 40px;
+            padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 650px; /* Made bigger and wider */
+            max-width: 480px; /* Perfectly sized for mobile screens */
             box-sizing: border-box;
-            margin-top: 30px;
-            margin-bottom: 30px;
+            margin-top: 20px;
         }
-        h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
+        h2 {
+            font-size: 20px;
+            margin-bottom: 5px;
+            word-break: break-all;
         }
         input {
             width: 100%;
-            padding: 14px;
-            margin: 12px 0;
+            padding: 12px;
+            margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 16px;
@@ -43,27 +43,24 @@
             background-color: #007bff;
             color: white;
             border: none;
-            padding: 14px 20px;
+            padding: 12px 20px;
             border-radius: 6px;
             font-size: 16px;
             cursor: pointer;
             margin-top: 10px;
             width: 100%;
         }
-        button:hover {
-            opacity: 0.9;
-        }
         #logout-btn {
             background-color: #dc3545;
-            margin-top: 30px;
+            margin-top: 20px;
         }
         .nav-btn {
             display: block;
             width: 100%;
-            margin: 20px 0;
+            margin: 15px 0;
             background-color: #007bff; 
             color: white;
-            padding: 14px 0;
+            padding: 12px 0;
             border-radius: 6px;
             border: none;
             font-size: 16px;
@@ -73,25 +70,25 @@
             display: none; 
             background-color: #f8f9fa;
             border: 1px solid #dee2e6;
-            padding: 20px;
+            padding: 15px 10px;
             border-radius: 8px;
-            margin: 20px 0;
+            margin: 15px 0;
             text-align: center;
         }
+        /* Compact 7-day row that fits all in one line */
         .streak-grid {
             display: flex;
             justify-content: space-between;
-            gap: 8px;
-            margin: 20px 0;
-            overflow-x: auto;
+            gap: 3px;
+            margin: 15px 0;
         }
         .streak-day {
             background: #fff;
             border: 1px solid #ccc;
-            border-radius: 6px;
-            padding: 12px 6px;
+            border-radius: 4px;
+            padding: 6px 1px;
             flex: 1;
-            font-size: 13px;
+            font-size: 10px;
             text-align: center;
         }
         .streak-day.active {
@@ -104,8 +101,8 @@
 <body>
 
     <div class="container">
-        <h1>Dashboard</h1>
         <div id="auth-section">
+            <h2>Welcome to EarnDesk</h2>
             <p>Sign in to start earning cash.</p>
             <input type="email" id="email" placeholder="Enter email">
             <input type="password" id="password" placeholder="Enter password">
@@ -114,14 +111,16 @@
         </div>
 
         <div id="dashboard-section" style="display: none;">
-            <p style="font-size: 18px;">Welcome, <span id="user-email"></span>!</p>
-            <p style="font-size: 20px;">Current Balance: <strong id="balance" style="color: #28a745;">$0.00</strong></p>
+            <!-- Replaced dashboard title with welcome email -->
+            <h2 id="user-email">Welcome!</h2>
+            <p style="font-size: 18px; margin: 10px 0;">Current Balance: <strong id="balance" style="color: #28a745;">$0.00</strong></p>
             
             <button class="nav-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
 
             <div class="streak-box" id="reward-section">
-                <p style="font-size: 16px;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
+                <p style="font-size: 14px; margin: 5px 0;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
                 
+                <!-- Compact single-line 7-day grid -->
                 <div class="streak-grid" id="streak-grid-container">
                     <div class="streak-day" id="day-1">1d<br>$0.01</div>
                     <div class="streak-day" id="day-2">2d<br>$0.02</div>
@@ -132,8 +131,8 @@
                     <div class="streak-day" id="day-7">7d<br>$0.07</div>
                 </div>
 
-                <p id="streak-status" style="margin: 15px 0; font-weight: 500;">Checking status...</p>
-                <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none; font-weight: bold;">Claim Daily Reward!</button>
+                <p id="streak-status" style="margin: 10px 0; font-size: 13px; font-weight: 500;">Checking status...</p>
+                <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none; font-weight: bold; padding: 10px;">Claim Daily Reward!</button>
             </div>
 
             <button id="logout-btn" onclick="logout()">Logout</button>
@@ -216,7 +215,7 @@
                 const currentStreak = data.streak || 0;
 
                 document.getElementById('balance').innerText = "$" + currentBalance.toFixed(2);
-                document.getElementById('streak-count').innerText = currentStreak;
+                document.getElementById('user-email').innerText = user.email;
 
                 for (let i = 1; i <= 7; i++) {
                     const dayBox = document.getElementById(`day-${i}`);
@@ -297,7 +296,6 @@
             if (user) {
                 document.getElementById('auth-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
-                document.getElementById('user-email').innerText = user.email;
                 fetchUserData(user);
             } else {
                 document.getElementById('auth-section').style.display = 'block';
