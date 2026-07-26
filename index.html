@@ -107,7 +107,7 @@
             color: var(--text-color);
         }
 
-        /* Slide-out Menu (Fixed width to stop text from jumping/wrapping) */
+        /* Slide-out Menu */
         .sidebar {
             height: 100%;
             width: 0;
@@ -130,7 +130,7 @@
             display: block;
             transition: 0.2s;
             cursor: pointer;
-            width: 215px;
+            width: 230px;
         }
         .sidebar a:hover {
             background-color: var(--sidebar-hover);
@@ -144,7 +144,7 @@
             width: auto;
         }
 
-        /* Toggle Switch Menu Item Style */
+        /* Toggle Switch Menu Item Style with spacing */
         .sidebar-toggle-container {
             padding: 12px 25px;
             display: flex;
@@ -152,8 +152,9 @@
             align-items: center;
             font-size: 18px;
             color: var(--text-color);
-            width: 215px;
+            width: 250px;
             box-sizing: border-box;
+            gap: 15px;
         }
 
         /* Toggle Switch CSS */
@@ -225,6 +226,7 @@
             border-radius: 6px;
             font-size: 16px;
             box-sizing: border-box;
+            color: #121212;
         }
         button {
             background-color: #007bff;
@@ -236,10 +238,6 @@
             cursor: pointer;
             margin-top: 10px;
             width: 100%;
-        }
-        #logout-btn {
-            background-color: #dc3545;
-            margin-top: 20px;
         }
         .nav-btn {
             display: block;
@@ -347,15 +345,15 @@
         </div>
     </div>
 
-    <!-- Slide-out Sidebar Menu with Dark / light mode Toggle -->
+    <!-- Slide-out Sidebar Menu -->
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
-        <a href="#" onclick="toggleSidebar()">Dashboard</a>
-        <a href="#" onclick="toggleSidebar()">Tasks</a>
-        <a href="#" onclick="toggleSidebar()">Profile</a>
+        <a href="#" onclick="showSection('dashboard-section')">Dashboard</a>
+        <a href="#" onclick="showSection('tasks-section')">Tasks</a>
+        <a href="#" onclick="showSection('profile-section')">Profile</a>
         
         <div class="sidebar-toggle-container">
-            <span>Dark / light mode</span>
+            <span>Dark / Light mode</span>
             <label class="switch">
                 <input type="checkbox" id="theme-checkbox" checked onchange="toggleTheme()">
                 <span class="slider"></span>
@@ -366,6 +364,7 @@
     <!-- Main Content Container -->
     <div class="main-container">
         <div class="container">
+            <!-- Auth Section -->
             <div id="auth-section">
                 <h2>Welcome to EarnDesk</h2>
                 <p style="color: #666;">Sign up or login to start earning cash.</p>
@@ -376,6 +375,7 @@
                 <button onclick="login()" style="background-color: #28a745;">Login</button>
             </div>
 
+            <!-- Dashboard Section -->
             <div id="dashboard-section" style="display: none;">
                 <h2 id="user-welcome">Welcome!</h2>
                 <p style="font-size: 14px; color: #666; margin: 5px 0 15px 0;">Manage your earnings and rewards below.</p>
@@ -398,8 +398,25 @@
                     <p id="streak-status" style="margin: 10px 0; font-size: 13px; font-weight: 500; color: #555;">Checking status...</p>
                     <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none; font-weight: bold; padding: 10px;">Claim Daily Reward!</button>
                 </div>
+            </div>
 
-                <button id="logout-btn" onclick="logout()">Logout</button>
+            <!-- Tasks Section Placeholder -->
+            <div id="tasks-section" style="display: none;">
+                <h2>Tasks</h2>
+                <p style="font-size: 14px; color: #666; margin: 5px 0 15px 0;">Complete tasks to earn more cash.</p>
+                <p style="color: #333;">No tasks available right now. Check back soon!</p>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profile-section" style="display: none;">
+                <h2>User Profile</h2>
+                <p style="font-size: 14px; color: #666; margin: 5px 0 15px 0;">Manage your account details below.</p>
+                
+                <label style="font-size: 12px; font-weight: bold; color: #555; display: block; text-align: left;">Username</label>
+                <input type="text" id="profile-name-input" placeholder="Enter new username">
+                <button onclick="updateUsername()" style="background-color: #28a745; margin-top: 5px;">Update Username</button>
+
+                <button onclick="logout()" style="background-color: #dc3545; margin-top: 25px;">Logout</button>
             </div>
         </div>
     </div>
@@ -440,14 +457,22 @@
             }
         }
 
+        window.showSection = function(sectionId) {
+            toggleSidebar();
+            document.getElementById('dashboard-section').style.display = 'none';
+            document.getElementById('tasks-section').style.display = 'none';
+            document.getElementById('profile-section').style.display = 'none';
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
         window.toggleTheme = function() {
             const htmlTag = document.documentElement;
             const checkbox = document.getElementById('theme-checkbox');
             
             if (checkbox.checked) {
-                htmlTag.removeAttribute('data-theme'); // Black Background
+                htmlTag.removeAttribute('data-theme');
             } else {
-                htmlTag.setAttribute('data-theme', 'light'); // White Background
+                htmlTag.setAttribute('data-theme', 'light');
             }
         }
 
@@ -485,6 +510,23 @@
 
         window.logout = function() {
             signOut(auth);
+        }
+
+        window.updateUsername = async function() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            const newName = document.getElementById('profile-name-input').value;
+            if (!newName) {
+                alert("Please enter a username!");
+                return;
+            }
+
+            const docRef = doc(db, "users", user.uid);
+            await updateDoc(docRef, { name: newName });
+            
+            document.getElementById('user-welcome').innerText = "Welcome, " + newName + "!";
+            alert("Username updated successfully!");
         }
 
         window.toggleRewardBox = function() {
@@ -527,6 +569,7 @@
 
                 document.getElementById('balance').innerText = "$" + currentBalance.toFixed(2);
                 document.getElementById('user-welcome').innerText = "Welcome, " + userName + "!";
+                document.getElementById('profile-name-input').value = userName;
                 document.getElementById('streak-count').innerText = currentStreak;
 
                 for (let i = 1; i <= 7; i++) {
@@ -610,10 +653,14 @@
             if (user) {
                 document.getElementById('auth-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
+                document.getElementById('tasks-section').style.display = 'none';
+                document.getElementById('profile-section').style.display = 'none';
                 fetchUserData(user);
             } else {
                 document.getElementById('auth-section').style.display = 'block';
                 document.getElementById('dashboard-section').style.display = 'none';
+                document.getElementById('tasks-section').style.display = 'none';
+                document.getElementById('profile-section').style.display = 'none';
             }
         });
     </script>
