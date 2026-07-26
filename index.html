@@ -40,11 +40,22 @@
         #logout-btn {
             background-color: #dc3545;
         }
+        .nav-link {
+            display: inline-block;
+            margin: 10px 0 20px 0;
+            background-color: #17a2b8;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+        }
         .streak-box {
             background-color: #e9ecef;
-            padding: 10px;
+            padding: 15px;
             border-radius: 5px;
             margin: 15px 0;
+            scroll-margin-top: 20px;
         }
     </style>
 </head>
@@ -64,7 +75,10 @@
             <p>Welcome, <span id="user-email"></span>!</p>
             <p>Current Balance: <strong id="balance">$0.00</strong></p>
             
-            <div class="streak-box">
+            <!-- Quick navigation link to the reward section -->
+            <a href="#reward-section" class="nav-link">🎁 Go to Daily Reward</a>
+
+            <div class="streak-box" id="reward-section">
                 <p>🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
                 <p id="streak-status">Checking status...</p>
                 <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none;">Claim Daily Reward!</button>
@@ -193,7 +207,6 @@
                 }
             }
 
-            // Balanced reward calculation: Day 1 = $0.01, Day 7 = $0.07
             const cashEarned = newStreak * 0.01;
 
             await updateDoc(docRef, {
