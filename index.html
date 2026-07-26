@@ -103,7 +103,6 @@
         <div id="auth-section">
             <h2>Welcome to EarnDesk</h2>
             <p>Sign up or login to start earning cash.</p>
-            <!-- Added Name input field for registration -->
             <input type="text" id="reg-name" placeholder="Enter your name (for sign up)">
             <input type="email" id="email" placeholder="Enter email">
             <input type="password" id="password" placeholder="Enter password">
@@ -112,7 +111,6 @@
         </div>
 
         <div id="dashboard-section" style="display: none;">
-            <!-- Formatted to show Welcome, [Name]! -->
             <h2 id="user-welcome">Welcome!</h2>
             <p style="font-size: 18px; margin: 10px 0;">Current Balance: <strong id="balance" style="color: #28a745;">$0.00</strong></p>
             
@@ -225,6 +223,7 @@
 
                 document.getElementById('balance').innerText = "$" + currentBalance.toFixed(2);
                 document.getElementById('user-welcome').innerText = "Welcome, " + userName + "!";
+                document.getElementById('streak-count').innerText = currentStreak;
 
                 for (let i = 1; i <= 7; i++) {
                     const dayBox = document.getElementById(`day-${i}`);
@@ -258,7 +257,6 @@
                     }
                 }
             } else {
-                // Fallback if user document doesn't exist yet in Firestore
                 await setDoc(docRef, {
                     name: "User",
                     email: user.email,
@@ -299,7 +297,10 @@
                 lastLoginDate: today
             });
 
-            alert(`Successfully claimed Day ${newStreak} reward: $${cashEarned.toFixed(2)}!`);
+            // Update status message on page instead of pop-up alert
+            const streakStatus = document.getElementById('streak-status');
+            streakStatus.innerText = `Successfully claimed Day ${newStreak} reward: $${cashEarned.toFixed(2)}!`;
+            
             fetchUserData(user);
         }
 
