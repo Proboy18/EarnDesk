@@ -9,6 +9,12 @@
             --bg-color: #000000;
             --navbar-bg: #001f3f; /* Dark navy blue top navigation bar */
             --text-color: #ffffff;
+            --card-bg: #1e1e1e; /* Dark card background for dark mode */
+            --card-text: #ffffff;
+            --card-subtext: #aaaaaa;
+            --input-bg: #2a2a2a;
+            --input-border: #444444;
+            --input-text: #ffffff;
             --pill-bg: #000000;
             --pill-border: #333333;
             --sidebar-bg: #121212;
@@ -19,6 +25,12 @@
             --bg-color: #f4f7f6;
             --navbar-bg: #001f3f; /* Keeps top bar dark navy blue in light mode too */
             --text-color: #121212;
+            --card-bg: #ffffff; /* White card background for light mode */
+            --card-text: #121212;
+            --card-subtext: #666666;
+            --input-bg: #ffffff;
+            --input-border: #cccccc;
+            --input-text: #121212;
             --pill-bg: #ffffff;
             --pill-border: #cccccc;
             --sidebar-bg: #ffffff;
@@ -204,7 +216,7 @@
             padding: 20px;
         }
         .container {
-            background-color: white;
+            background-color: var(--card-bg);
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -212,21 +224,27 @@
             max-width: 480px;
             box-sizing: border-box;
             margin-top: 10px;
+            transition: background-color 0.3s;
         }
         h2 {
             font-size: 20px;
             margin-bottom: 5px;
-            color: #121212;
+            color: var(--card-text);
+        }
+        p {
+            color: var(--card-subtext);
         }
         input {
             width: 100%;
             padding: 12px;
             margin: 10px 0;
-            border: 1px solid #ccc;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
             border-radius: 6px;
             font-size: 16px;
             box-sizing: border-box;
-            color: #121212;
+            color: var(--input-text);
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
         }
         button {
             background-color: #007bff;
@@ -253,8 +271,8 @@
         }
         .streak-box {
             display: none; 
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
             padding: 15px 10px;
             border-radius: 8px;
             margin: 15px 0;
@@ -267,22 +285,22 @@
             margin: 15px 0;
         }
         .streak-day {
-            background: #fff;
-            border: 1px solid #ccc;
+            background: var(--card-bg);
+            border: 1px solid var(--input-border);
             border-radius: 4px;
             padding: 6px 1px;
             flex: 1;
             font-size: 10px;
             text-align: center;
-            color: #333;
+            color: var(--card-text);
         }
         .streak-day.active {
             border-color: #28a745;
-            background-color: #e6f4ea;
+            background-color: #1e3a29;
             font-weight: bold;
         }
 
-        /* Custom White Popup Modal Styles */
+        /* Custom Popup Modal Styles */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -296,7 +314,7 @@
             z-index: 3000;
         }
         .modal-content {
-            background-color: white;
+            background-color: var(--card-bg);
             padding: 25px 20px;
             border-radius: 12px;
             width: 85%;
@@ -306,7 +324,7 @@
         }
         .modal-content p {
             font-size: 16px;
-            color: #333;
+            color: var(--card-text);
             margin-bottom: 20px;
             line-height: 1.4;
         }
@@ -322,7 +340,7 @@
             cursor: pointer;
         }
         .modal-btn:hover {
-            background-color: #f8f9fa;
+            background-color: var(--sidebar-hover);
         }
     </style>
 </head>
@@ -367,7 +385,7 @@
             <!-- Auth Section -->
             <div id="auth-section">
                 <h2>Welcome to EarnDesk</h2>
-                <p style="color: #666;">Sign up or login to start earning cash.</p>
+                <p>Sign up or login to start earning cash.</p>
                 <input type="text" id="reg-name" placeholder="Enter your name">
                 <input type="email" id="email" placeholder="Enter email">
                 <input type="password" id="password" placeholder="Enter password">
@@ -378,12 +396,12 @@
             <!-- Dashboard Section -->
             <div id="dashboard-section" style="display: none;">
                 <h2 id="user-welcome">Welcome!</h2>
-                <p style="font-size: 14px; color: #666; margin: 5px 0 15px 0;">Manage your earnings and rewards below.</p>
+                <p style="font-size: 14px; margin: 5px 0 15px 0;">Manage your earnings and rewards below.</p>
                 
                 <button class="nav-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
 
                 <div class="streak-box" id="reward-section">
-                    <p style="font-size: 14px; margin: 5px 0; color: #333;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
+                    <p style="font-size: 14px; margin: 5px 0;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
                     
                     <div class="streak-grid" id="streak-grid-container">
                         <div class="streak-day" id="day-1">1d<br>$0.01</div>
@@ -395,7 +413,7 @@
                         <div class="streak-day" id="day-7">7d<br>$0.07</div>
                     </div>
 
-                    <p id="streak-status" style="margin: 10px 0; font-size: 13px; font-weight: 500; color: #555;">Checking status...</p>
+                    <p id="streak-status" style="margin: 10px 0; font-size: 13px; font-weight: 500;">Checking status...</p>
                     <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none; font-weight: bold; padding: 10px;">Claim Daily Reward!</button>
                 </div>
             </div>
@@ -403,16 +421,16 @@
             <!-- Tasks Section Placeholder -->
             <div id="tasks-section" style="display: none;">
                 <h2>Tasks</h2>
-                <p style="font-size: 14px; color: #666; margin: 5px 0 15px 0;">Complete tasks to earn more cash.</p>
-                <p style="color: #333;">No tasks available right now. Check back soon!</p>
+                <p style="font-size: 14px; margin: 5px 0 15px 0;">Complete tasks to earn more cash.</p>
+                <p>No tasks available right now. Check back soon!</p>
             </div>
 
             <!-- Profile Section -->
             <div id="profile-section" style="display: none;">
                 <h2>User Profile</h2>
-                <p style="font-size: 14px; color: #666; margin: 5px 0 15px 0;">Manage your account details below.</p>
+                <p style="font-size: 14px; margin: 5px 0 15px 0;">Manage your account details below.</p>
                 
-                <label style="font-size: 12px; font-weight: bold; color: #555; display: block; text-align: left;">Username</label>
+                <label style="font-size: 12px; font-weight: bold; display: block; text-align: left; color: var(--card-subtext);">Username</label>
                 <input type="text" id="profile-name-input" placeholder="Enter new username">
                 <button onclick="updateUsername()" style="background-color: #28a745; margin-top: 5px;">Update Username</button>
 
@@ -421,7 +439,7 @@
         </div>
     </div>
 
-    <!-- Custom White Popup Modal -->
+    <!-- Custom Popup Modal -->
     <div class="modal-overlay" id="custom-modal">
         <div class="modal-content">
             <p id="modal-text">Reward claimed for today! Come back tomorrow</p>
