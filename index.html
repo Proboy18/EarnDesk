@@ -5,12 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EarnDesk - Get Paid To Complete Tasks</title>
     <style>
+        :root {
+            --bg-color: #000000;
+            --navbar-bg: #121212;
+            --text-color: #ffffff;
+            --pill-bg: #000000;
+            --pill-border: #333333;
+            --sidebar-bg: #121212;
+            --sidebar-hover: #222222;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f4f7f6;
+            --navbar-bg: #ffffff;
+            --text-color: #121212;
+            --pill-bg: #ffffff;
+            --pill-border: #cccccc;
+            --sidebar-bg: #ffffff;
+            --sidebar-hover: #f1f1f1;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background-color: #0f172a; /* Dark modern background to match the style */
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* Top Navigation Bar */
@@ -18,10 +40,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #1e293b;
+            background-color: var(--navbar-bg);
             padding: 12px 16px;
-            color: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            color: var(--text-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, color 0.3s;
         }
         .nav-left {
             display: flex;
@@ -33,7 +56,7 @@
             cursor: pointer;
             background: none;
             border: none;
-            color: white;
+            color: var(--text-color);
             padding: 0;
             width: auto;
             margin: 0;
@@ -52,16 +75,20 @@
         .earnings-pill {
             display: flex;
             align-items: center;
-            background-color: #0f172a;
-            padding: 6px 12px 6px 6px;
+            background-color: var(--pill-bg);
+            padding: 6px 14px 6px 10px;
             border-radius: 30px;
             gap: 10px;
+            border: 1px solid var(--pill-border);
+            transition: background-color 0.3s, border-color 0.3s;
         }
-        .earnings-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
+        .earnings-logo-icon {
+            font-size: 20px;
+            font-weight: bold;
+            color: #28a745;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .earnings-info {
             display: flex;
@@ -76,7 +103,7 @@
         .earnings-amount {
             font-size: 14px;
             font-weight: bold;
-            color: white;
+            color: var(--text-color);
         }
 
         /* Slide-out Menu (for the 3 lines) */
@@ -87,7 +114,7 @@
             z-index: 2000;
             top: 0;
             left: 0;
-            background-color: #1e293b;
+            background-color: var(--sidebar-bg);
             overflow-x: hidden;
             transition: 0.3s;
             padding-top: 60px;
@@ -97,12 +124,13 @@
             padding: 12px 25px;
             text-decoration: none;
             font-size: 18px;
-            color: #f8fafc;
+            color: var(--text-color);
             display: block;
             transition: 0.2s;
+            cursor: pointer;
         }
         .sidebar a:hover {
-            background-color: #334155;
+            background-color: var(--sidebar-hover);
         }
         .sidebar .close-btn {
             position: absolute;
@@ -123,7 +151,7 @@
             background-color: white;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             width: 100%;
             max-width: 480px;
             box-sizing: border-box;
@@ -132,7 +160,7 @@
         h2 {
             font-size: 20px;
             margin-bottom: 5px;
-            color: #1e293b;
+            color: #121212;
         }
         input {
             width: 100%;
@@ -209,7 +237,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.6);
             justify-content: center;
             align-items: center;
             z-index: 3000;
@@ -255,7 +283,7 @@
         </div>
         <div class="nav-right">
             <div class="earnings-pill">
-                <div class="earnings-avatar"></div>
+                <div class="earnings-logo-icon">$</div>
                 <div class="earnings-info">
                     <span class="earnings-label">EARNINGS</span>
                     <span class="earnings-amount" id="balance">$0.00</span>
@@ -264,12 +292,13 @@
         </div>
     </div>
 
-    <!-- Slide-out Sidebar Menu (Ready for your 3 lines links later) -->
+    <!-- Slide-out Sidebar Menu with Dark/Light Toggle -->
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
         <a href="#" onclick="toggleSidebar()">Dashboard</a>
         <a href="#" onclick="toggleSidebar()">Tasks</a>
         <a href="#" onclick="toggleSidebar()">Profile</a>
+        <a href="javascript:void(0)" onclick="toggleTheme()" id="theme-toggle-text">🌙 Dark / Light Mode</a>
     </div>
 
     <!-- Main Content Container -->
@@ -340,7 +369,6 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Sidebar toggle functionality for the 3 lines menu
         window.toggleSidebar = function() {
             const sidebar = document.getElementById("mySidebar");
             if (sidebar.style.width === "250px") {
@@ -348,6 +376,21 @@
             } else {
                 sidebar.style.width = "250px";
             }
+        }
+
+        // Dark / Light Mode Switch Function
+        window.toggleTheme = function() {
+            const htmlTag = document.documentElement;
+            const themeText = document.getElementById('theme-toggle-text');
+            
+            if (htmlTag.getAttribute('data-theme') === 'light') {
+                htmlTag.removeAttribute('data-theme');
+                themeText.innerText = "🌙 Switch to Light Mode";
+            } else {
+                htmlTag.setAttribute('data-theme', 'light');
+                themeText.innerText = "☀️ Switch to Dark Mode";
+            }
+            toggleSidebar(); // Closes menu automatically after clicking
         }
 
         window.register = async function() {
