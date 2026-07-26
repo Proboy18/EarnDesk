@@ -21,7 +21,7 @@
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 480px; /* Perfectly sized for mobile screens */
+            max-width: 480px;
             box-sizing: border-box;
             margin-top: 20px;
         }
@@ -75,7 +75,6 @@
             margin: 15px 0;
             text-align: center;
         }
-        /* Compact 7-day row that fits all in one line */
         .streak-grid {
             display: flex;
             justify-content: space-between;
@@ -103,7 +102,9 @@
     <div class="container">
         <div id="auth-section">
             <h2>Welcome to EarnDesk</h2>
-            <p>Sign in to start earning cash.</p>
+            <p>Sign up or login to start earning cash.</p>
+            <!-- Added Name input field for registration -->
+            <input type="text" id="reg-name" placeholder="Enter your name (for sign up)">
             <input type="email" id="email" placeholder="Enter email">
             <input type="password" id="password" placeholder="Enter password">
             <button onclick="register()">Sign Up</button>
@@ -111,8 +112,8 @@
         </div>
 
         <div id="dashboard-section" style="display: none;">
-            <!-- Replaced dashboard title with welcome email -->
-            <h2 id="user-email">Welcome!</h2>
+            <!-- Formatted to show Welcome, [Name]! -->
+            <h2 id="user-welcome">Welcome!</h2>
             <p style="font-size: 18px; margin: 10px 0;">Current Balance: <strong id="balance" style="color: #28a745;">$0.00</strong></p>
             
             <button class="nav-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
@@ -120,7 +121,6 @@
             <div class="streak-box" id="reward-section">
                 <p style="font-size: 14px; margin: 5px 0;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
                 
-                <!-- Compact single-line 7-day grid -->
                 <div class="streak-grid" id="streak-grid-container">
                     <div class="streak-day" id="day-1">1d<br>$0.01</div>
                     <div class="streak-day" id="day-2">2d<br>$0.02</div>
@@ -159,12 +159,20 @@
         const db = getFirestore(app);
 
         window.register = async function() {
+            const name = document.getElementById('reg-name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+
+            if (!name) {
+                alert("Please enter your name!");
+                return;
+            }
+
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
                 await setDoc(doc(db, "users", user.uid), {
+                    name: name,
                     email: user.email,
                     balance: 0.00,
                     streak: 0,
@@ -213,9 +221,10 @@
                 const data = docSnap.data();
                 const currentBalance = data.balance || 0;
                 const currentStreak = data.streak || 0;
+                const userName = data.name || "User";
 
                 document.getElementById('balance').innerText = "$" + currentBalance.toFixed(2);
-                document.getElementById('user-email').innerText = user.email;
+                document.getElementById('user-welcome').innerText = "Welcome, " + userName + "!";
 
                 for (let i = 1; i <= 7; i++) {
                     const dayBox = document.getElementById(`day-${i}`);
@@ -249,7 +258,9 @@
                     }
                 }
             } else {
+                // Fallback if user document doesn't exist yet in Firestore
                 await setDoc(docRef, {
+                    name: "User",
                     email: user.email,
                     balance: 0.00,
                     streak: 0,
