@@ -7,28 +7,132 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
+            background-color: #0f172a; /* Dark modern background to match the style */
             margin: 0;
-            padding: 10px;
+            padding: 0;
             min-height: 100vh;
+        }
+
+        /* Top Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1e293b;
+            padding: 12px 16px;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            padding: 0;
+            width: auto;
+            margin: 0;
+        }
+        .brand-logo {
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Earnings Pill Styling */
+        .earnings-pill {
+            display: flex;
+            align-items: center;
+            background-color: #0f172a;
+            padding: 6px 12px 6px 6px;
+            border-radius: 30px;
+            gap: 10px;
+        }
+        .earnings-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+        }
+        .earnings-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .earnings-label {
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        .earnings-amount {
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* Slide-out Menu (for the 3 lines) */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            background-color: #1e293b;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+        }
+        .sidebar a {
+            padding: 12px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #f8fafc;
+            display: block;
+            transition: 0.2s;
+        }
+        .sidebar a:hover {
+            background-color: #334155;
+        }
+        .sidebar .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Main Container */
+        .main-container {
             display: flex;
             justify-content: center;
             align-items: flex-start;
+            padding: 20px;
         }
         .container {
             background-color: white;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             width: 100%;
             max-width: 480px;
             box-sizing: border-box;
-            margin-top: 20px;
+            margin-top: 10px;
         }
         h2 {
             font-size: 20px;
             margin-bottom: 5px;
-            word-break: break-all;
+            color: #1e293b;
         }
         input {
             width: 100%;
@@ -89,6 +193,7 @@
             flex: 1;
             font-size: 10px;
             text-align: center;
+            color: #333;
         }
         .streak-day.active {
             border-color: #28a745;
@@ -107,10 +212,10 @@
             background-color: rgba(0, 0, 0, 0.5);
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 3000;
         }
         .modal-content {
-            background-color: white; /* Pure white background box */
+            background-color: white;
             padding: 25px 20px;
             border-radius: 12px;
             width: 85%;
@@ -125,8 +230,8 @@
             line-height: 1.4;
         }
         .modal-btn {
-            background-color: transparent; /* Clean transparent button background */
-            color: #28a745; /* Green text for the OK button */
+            background-color: transparent;
+            color: #28a745;
             border: none;
             padding: 10px 0;
             border-radius: 6px;
@@ -136,51 +241,79 @@
             cursor: pointer;
         }
         .modal-btn:hover {
-            background-color: #f8f9fa; /* Subtle highlight when tapped */
+            background-color: #f8f9fa;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div id="auth-section">
-            <h2>Welcome to EarnDesk</h2>
-            <p>Sign up or login to start earning cash.</p>
-            <input type="text" id="reg-name" placeholder="Enter your name (for sign up)">
-            <input type="email" id="email" placeholder="Enter email">
-            <input type="password" id="password" placeholder="Enter password">
-            <button onclick="register()">Sign Up</button>
-            <button onclick="login()" style="background-color: #28a745;">Login</button>
+    <!-- Top Navigation Bar -->
+    <div class="navbar">
+        <div class="nav-left">
+            <button class="menu-icon" onclick="toggleSidebar()">&#9776;</button>
+            <span class="brand-logo">EarnDesk</span>
         </div>
-
-        <div id="dashboard-section" style="display: none;">
-            <h2 id="user-welcome">Welcome!</h2>
-            <p style="font-size: 18px; margin: 10px 0;">Current Balance: <strong id="balance" style="color: #28a745;">$0.00</strong></p>
-            
-            <button class="nav-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
-
-            <div class="streak-box" id="reward-section">
-                <p style="font-size: 14px; margin: 5px 0;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
-                
-                <div class="streak-grid" id="streak-grid-container">
-                    <div class="streak-day" id="day-1">1d<br>$0.01</div>
-                    <div class="streak-day" id="day-2">2d<br>$0.02</div>
-                    <div class="streak-day" id="day-3">3d<br>$0.03</div>
-                    <div class="streak-day" id="day-4">4d<br>$0.04</div>
-                    <div class="streak-day" id="day-5">5d<br>$0.05</div>
-                    <div class="streak-day" id="day-6">6d<br>$0.06</div>
-                    <div class="streak-day" id="day-7">7d<br>$0.07</div>
+        <div class="nav-right">
+            <div class="earnings-pill">
+                <div class="earnings-avatar"></div>
+                <div class="earnings-info">
+                    <span class="earnings-label">EARNINGS</span>
+                    <span class="earnings-amount" id="balance">$0.00</span>
                 </div>
-
-                <p id="streak-status" style="margin: 10px 0; font-size: 13px; font-weight: 500;">Checking status...</p>
-                <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none; font-weight: bold; padding: 10px;">Claim Daily Reward!</button>
             </div>
-
-            <button id="logout-btn" onclick="logout()">Logout</button>
         </div>
     </div>
 
-    <!-- Custom White Popup Modal HTML -->
+    <!-- Slide-out Sidebar Menu (Ready for your 3 lines links later) -->
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
+        <a href="#" onclick="toggleSidebar()">Dashboard</a>
+        <a href="#" onclick="toggleSidebar()">Tasks</a>
+        <a href="#" onclick="toggleSidebar()">Profile</a>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="main-container">
+        <div class="container">
+            <div id="auth-section">
+                <h2>Welcome to EarnDesk</h2>
+                <p style="color: #666;">Sign up or login to start earning cash.</p>
+                <input type="text" id="reg-name" placeholder="Enter your name">
+                <input type="email" id="email" placeholder="Enter email">
+                <input type="password" id="password" placeholder="Enter password">
+                <button onclick="register()">Sign Up</button>
+                <button onclick="login()" style="background-color: #28a745;">Login</button>
+            </div>
+
+            <div id="dashboard-section" style="display: none;">
+                <h2 id="user-welcome">Welcome!</h2>
+                <p style="font-size: 14px; color: #666; margin: 5px 0 15px 0;">Manage your earnings and rewards below.</p>
+                
+                <button class="nav-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
+
+                <div class="streak-box" id="reward-section">
+                    <p style="font-size: 14px; margin: 5px 0; color: #333;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
+                    
+                    <div class="streak-grid" id="streak-grid-container">
+                        <div class="streak-day" id="day-1">1d<br>$0.01</div>
+                        <div class="streak-day" id="day-2">2d<br>$0.02</div>
+                        <div class="streak-day" id="day-3">3d<br>$0.03</div>
+                        <div class="streak-day" id="day-4">4d<br>$0.04</div>
+                        <div class="streak-day" id="day-5">5d<br>$0.05</div>
+                        <div class="streak-day" id="day-6">6d<br>$0.06</div>
+                        <div class="streak-day" id="day-7">7d<br>$0.07</div>
+                    </div>
+
+                    <p id="streak-status" style="margin: 10px 0; font-size: 13px; font-weight: 500; color: #555;">Checking status...</p>
+                    <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none; font-weight: bold; padding: 10px;">Claim Daily Reward!</button>
+                </div>
+
+                <button id="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom White Popup Modal -->
     <div class="modal-overlay" id="custom-modal">
         <div class="modal-content">
             <p id="modal-text">Reward claimed for today! Come back tomorrow</p>
@@ -206,6 +339,16 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
+        // Sidebar toggle functionality for the 3 lines menu
+        window.toggleSidebar = function() {
+            const sidebar = document.getElementById("mySidebar");
+            if (sidebar.style.width === "250px") {
+                sidebar.style.width = "0";
+            } else {
+                sidebar.style.width = "250px";
+            }
+        }
 
         window.register = async function() {
             const name = document.getElementById('reg-name').value;
