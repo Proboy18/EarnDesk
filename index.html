@@ -258,30 +258,35 @@
             width: 100%;
         }
 
-        /* Dashboard Top Layout Header (Red & Blue Marks Alignment) */
+        /* Dashboard Top Layout Header with improved separation */
         .dashboard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
-            gap: 10px;
+            gap: 15px;
         }
         .dashboard-header h2 {
             margin: 0;
-            font-size: 18px;
+            font-size: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-shrink: 1;
         }
         .daily-reward-btn {
             background-color: #007bff;
             color: white;
             border: none;
-            padding: 8px 14px;
+            padding: 7px 12px;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             width: auto;
             margin-top: 0;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .streak-box {
@@ -411,7 +416,7 @@
             <!-- Dashboard Section -->
             <div id="dashboard-section" style="display: none;">
                 <div class="dashboard-header">
-                    <h2 id="user-welcome">Welcome!</h2>
+                    <h2 id="user-welcome">Welcome, User!</h2>
                     <button class="daily-reward-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
                 </div>
                 <p style="font-size: 13px; margin: 0 0 15px 0;">Manage your earnings and rewards below.</p>
