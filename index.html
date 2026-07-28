@@ -257,18 +257,33 @@
             margin-top: 10px;
             width: 100%;
         }
-        .nav-btn {
-            display: block;
-            width: 100%;
-            margin: 15px 0;
-            background-color: #007bff; 
-            color: white;
-            padding: 12px 0;
-            border-radius: 6px;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
+
+        /* Dashboard Top Layout Header (Red & Blue Marks Alignment) */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
         }
+        .dashboard-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .daily-reward-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            width: auto;
+            margin-top: 0;
+            white-space: nowrap;
+        }
+
         .streak-box {
             display: none; 
             background-color: var(--input-bg);
@@ -395,10 +410,11 @@
 
             <!-- Dashboard Section -->
             <div id="dashboard-section" style="display: none;">
-                <h2 id="user-welcome">Welcome!</h2>
-                <p style="font-size: 14px; margin: 5px 0 15px 0;">Manage your earnings and rewards below.</p>
-                
-                <button class="nav-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
+                <div class="dashboard-header">
+                    <h2 id="user-welcome">Welcome!</h2>
+                    <button class="daily-reward-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
+                </div>
+                <p style="font-size: 13px; margin: 0 0 15px 0;">Manage your earnings and rewards below.</p>
 
                 <div class="streak-box" id="reward-section">
                     <p style="font-size: 14px; margin: 5px 0;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
