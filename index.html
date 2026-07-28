@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnDesk - Get Paid To Complete Tasks</title>
+    <title>EarnDesk - Professional Earning Platform</title>
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -46,7 +46,7 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Top Navigation Bar */
@@ -57,8 +57,11 @@
             background-color: var(--navbar-bg);
             padding: 14px 20px;
             color: var(--text-color);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: background-color 0.3s;
+            box-shadow: 0 4px 20px -2px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
         }
         .nav-left {
             display: flex;
@@ -74,15 +77,17 @@
             padding: 0;
             width: auto;
             margin: 0;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .menu-icon:active {
-            transform: scale(0.9);
-        }
+        .menu-icon:hover { transform: scale(1.1); }
+        .menu-icon:active { transform: scale(0.9); }
         .brand-logo {
             font-size: 18px;
             font-weight: 700;
             letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .nav-right {
             display: flex;
@@ -98,7 +103,12 @@
             border-radius: 30px;
             gap: 10px;
             border: 1px solid var(--pill-border);
-            transition: background-color 0.3s, border-color 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .earnings-pill:hover {
+            border-color: #10b981;
+            transform: translateY(-1px);
         }
         .earnings-logo-icon {
             font-size: 16px;
@@ -107,6 +117,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            animation: pulseGlow 2s infinite;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.95); }
         }
         .earnings-info {
             display: flex;
@@ -136,7 +151,7 @@
             overflow-x: hidden;
             transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             padding-top: 60px;
-            box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+            box-shadow: 4px 0 25px rgba(0,0,0,0.4);
             white-space: nowrap;
         }
         .sidebar.open {
@@ -145,23 +160,30 @@
         .sidebar a, .sidebar .sidebar-toggle-container {
             padding: 12px 25px;
             text-decoration: none;
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 500;
             color: var(--text-color);
             display: block;
             opacity: 0;
-            transform: translateX(-15px);
-            transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.2s;
+            transform: translateX(-20px);
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s;
             cursor: pointer;
-            width: 230px;
+            width: 220px;
+            border-radius: 0 25px 25px 0;
+            margin-bottom: 4px;
         }
         .sidebar.open a:nth-child(2) { opacity: 1; transform: translateX(0); transition-delay: 0.05s; }
         .sidebar.open a:nth-child(3) { opacity: 1; transform: translateX(0); transition-delay: 0.08s; }
         .sidebar.open a:nth-child(4) { opacity: 1; transform: translateX(0); transition-delay: 0.11s; }
         .sidebar.open a:nth-child(5) { opacity: 1; transform: translateX(0); transition-delay: 0.14s; }
-        .sidebar.open .sidebar-toggle-container { opacity: 1; transform: translateX(0); transition-delay: 0.18s; }
+        .sidebar.open a:nth-child(6) { opacity: 1; transform: translateX(0); transition-delay: 0.17s; }
+        .sidebar.open a:nth-child(7) { opacity: 1; transform: translateX(0); transition-delay: 0.20s; }
+        .sidebar.open .sidebar-toggle-container { opacity: 1; transform: translateX(0); transition-delay: 0.23s; }
 
         .sidebar a:hover {
             background-color: var(--sidebar-hover);
+            color: #3b82f6;
+            padding-left: 28px;
         }
         .sidebar .close-btn {
             position: absolute;
@@ -172,17 +194,23 @@
             width: auto;
             opacity: 1 !important;
             transform: none !important;
+            border-radius: 50%;
+            padding: 4px 10px;
         }
+        .sidebar .close-btn:hover { background-color: var(--sidebar-hover); color: var(--text-color); }
 
         .sidebar-toggle-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-color);
-            width: 250px;
+            width: 220px;
             box-sizing: border-box;
             gap: 15px;
+            margin-top: 20px;
+            border-top: 1px solid var(--input-border);
+            padding-top: 20px !important;
         }
 
         /* Toggle Switch */
@@ -199,7 +227,7 @@
             cursor: pointer;
             top: 0; left: 0; right: 0; bottom: 0;
             background-color: #4b5563;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 34px;
         }
         .slider:before {
@@ -210,25 +238,26 @@
             left: 3px;
             bottom: 3px;
             background-color: white;
-            transition: transform 0.3s;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         input:checked + .slider { background-color: #3b82f6; }
         input:checked + .slider:before { transform: translateX(20px); }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes subtlePulse {
             0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-            70% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
             100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
         }
 
         .animate-fade {
-            animation: fadeInUp 0.4s ease forwards;
+            animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         /* Layout Container */
@@ -236,22 +265,22 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 24px 16px;
+            padding: 30px 16px;
             min-height: calc(100vh - 80px);
             box-sizing: border-box;
         }
         .container {
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
         }
 
         /* Professional Card Boxes */
         .auth-card, .card-box {
             background-color: var(--card-bg);
-            padding: 30px 24px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s, color 0.3s;
+            padding: 32px 26px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3), 0 10px 15px -5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
             border: 1px solid var(--input-border);
         }
 
@@ -260,9 +289,9 @@
             margin-bottom: 24px;
         }
         .auth-header h2 {
-            font-size: 22px;
-            font-weight: 700;
-            margin: 0 0 6px 0;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
             color: var(--card-text);
             letter-spacing: -0.5px;
         }
@@ -276,33 +305,34 @@
         .auth-tabs {
             display: flex;
             background-color: var(--input-bg);
-            border-radius: 10px;
-            padding: 4px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 5px;
+            margin-bottom: 24px;
             border: 1px solid var(--input-border);
         }
         .auth-tab {
             flex: 1;
             background: transparent;
             border: none;
-            padding: 8px;
+            padding: 10px;
             font-size: 13px;
             font-weight: 600;
             color: var(--card-subtext);
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s ease;
+            border-radius: 9px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             margin-top: 0;
             width: auto;
         }
         .auth-tab.active {
             background-color: var(--card-bg);
             color: var(--card-text);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: scale(1.02);
         }
 
         .input-group {
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
         .input-label {
             display: block;
@@ -310,60 +340,105 @@
             font-weight: 600;
             color: var(--card-text);
             margin-bottom: 6px;
+            letter-spacing: 0.2px;
         }
         input {
             width: 100%;
-            padding: 11px 14px;
+            padding: 12px 16px;
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 14px;
             box-sizing: border-box;
             color: var(--input-text);
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
             margin: 0;
         }
         input:focus {
             border-color: var(--input-focus);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
         }
         input:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
 
-        .auth-btn {
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
+        /* File Upload Picker Styling */
+        .file-upload-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        .file-upload-wrapper input[type="file"] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .file-upload-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 16px;
+            background-color: var(--input-bg);
+            border: 1px dashed var(--input-border);
+            border-radius: 10px;
             font-size: 14px;
             font-weight: 600;
+            color: var(--card-text);
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: all 0.25s ease;
+        }
+        .file-upload-wrapper:hover .file-upload-btn {
+            border-color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.05);
+            color: #3b82f6;
+        }
+
+        .auth-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
             cursor: pointer;
             width: 100%;
-            margin-top: 18px;
-            transition: background-color 0.2s, transform 0.1s ease;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .auth-btn:hover { background-color: #2563eb; }
+        .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4); }
         .auth-btn:active { transform: scale(0.98); }
-        .auth-btn.login-btn { background-color: #10b981; }
-        .auth-btn.login-btn:hover { background-color: #059669; }
+        .auth-btn.login-btn { 
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        .auth-btn.login-btn:hover { box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4); }
 
         /* Dashboard & Reward Elements */
         .welcome-top-bar {
-            padding: 4px 4px 10px 4px;
-            margin-bottom: 5px;
+            padding: 4px 4px 12px 4px;
+            margin-bottom: 10px;
         }
         .welcome-top-bar h2 {
-            font-size: 18px;
+            font-size: 20px;
+            font-weight: 800;
             margin: 0;
             color: var(--card-text);
+            letter-spacing: -0.3px;
         }
         .welcome-top-bar p {
             font-size: 13px;
-            margin: 3px 0 0 0;
+            margin: 4px 0 0 0;
             color: var(--card-subtext);
         }
 
@@ -373,19 +448,21 @@
             margin-bottom: 15px;
         }
         .daily-reward-btn {
-            background-color: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 9px 18px;
+            border-radius: 10px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             width: auto;
             margin-top: 0;
-            animation: subtlePulse 2s infinite;
-            transition: transform 0.15s ease, background-color 0.2s;
+            animation: subtlePulse 2.5s infinite;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .daily-reward-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35); }
         .daily-reward-btn:active { transform: scale(0.94); }
 
         .streak-box {
@@ -394,101 +471,120 @@
             opacity: 0;
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
-            padding: 0 10px;
-            border-radius: 10px;
+            padding: 0 14px;
+            border-radius: 14px;
             margin-top: 0;
             text-align: center;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, padding 0.3s ease, margin-top 0.3s ease;
+            transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease, padding 0.35s ease, margin-top 0.35s ease;
         }
         .streak-box.open {
-            max-height: 350px;
+            max-height: 380px;
             opacity: 1;
-            padding: 15px 10px;
+            padding: 18px 14px;
             margin-top: 15px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
         }
 
         .streak-grid {
             display: flex;
             justify-content: space-between;
-            gap: 4px;
+            gap: 6px;
             margin: 15px 0;
         }
         .streak-day {
             background: var(--card-bg);
             border: 1px solid var(--input-border);
-            border-radius: 6px;
-            padding: 6px 2px;
+            border-radius: 8px;
+            padding: 8px 3px;
             flex: 1;
             font-size: 10px;
             text-align: center;
             color: var(--card-text);
-            transition: transform 0.2s;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .streak-day.active {
             border-color: #10b981;
-            background-color: rgba(16, 185, 129, 0.1);
+            background-color: rgba(16, 185, 129, 0.12);
             font-weight: bold;
-            transform: scale(1.05);
+            transform: scale(1.08);
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
         }
 
         /* Dashboard Games Hub Section */
         .games-hub-container {
-            margin-top: 20px;
-            padding-top: 15px;
+            margin-top: 24px;
+            padding-top: 18px;
             border-top: 1px solid var(--input-border);
         }
         .games-hub-title {
             font-size: 15px;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--card-text);
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            letter-spacing: -0.2px;
         }
         .games-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
+            gap: 12px;
         }
         .game-card-item {
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
-            border-radius: 12px;
-            padding: 12px 15px;
+            border-radius: 14px;
+            padding: 14px 16px;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
         .game-card-item:hover {
             border-color: #3b82f6;
-            transform: translateY(-2px);
-            background-color: rgba(59, 130, 246, 0.05);
+            transform: translateY(-3px);
+            background-color: rgba(59, 130, 246, 0.04);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15);
         }
         .game-card-art {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 22px;
             flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
+            box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .game-card-item:hover .game-card-art {
+            transform: scale(1.08) rotate(5deg);
+        }
+        .game-card-art.gold {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: 0 6px 15px rgba(245, 158, 11, 0.3);
+        }
+        .game-card-art.purple {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            box-shadow: 0 6px 15px rgba(139, 92, 246, 0.3);
         }
         .game-card-info h4 {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
             margin: 0 0 3px 0;
             color: var(--card-text);
         }
         .game-card-info p {
-            font-size: 11px;
+            font-size: 12px;
             color: var(--card-subtext);
             margin: 0;
+            line-height: 1.3;
         }
 
         /* Profile Specific Elements */
@@ -501,8 +597,8 @@
             border-bottom: 1px solid var(--input-border);
         }
         .profile-avatar-container {
-            width: 52px;
-            height: 52px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             overflow: hidden;
             flex-shrink: 0;
@@ -512,8 +608,8 @@
             justify-content: center;
             color: white;
             font-weight: 700;
-            font-size: 20px;
-            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+            font-size: 22px;
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
         }
         .profile-avatar-container img {
             width: 100%;
@@ -521,9 +617,10 @@
             object-fit: cover;
         }
         .profile-user-titles h3 {
-            font-size: 16px;
+            font-size: 17px;
             margin: 0 0 3px 0;
             color: var(--card-text);
+            font-weight: 700;
         }
         .profile-user-titles p {
             font-size: 12px;
@@ -532,74 +629,236 @@
         }
 
         .btn-primary-custom {
-            background-color: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
             border: none;
-            padding: 11px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 10px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             width: 100%;
-            margin-top: 6px;
-            transition: background-color 0.2s, transform 0.1s ease;
+            margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .btn-primary-custom:hover { background-color: #2563eb; }
+        .btn-primary-custom:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4); }
         .btn-primary-custom:active { transform: scale(0.98); }
 
         .btn-danger-custom {
             background-color: transparent;
             color: #ef4444;
             border: 1px solid rgba(239, 68, 68, 0.3);
-            padding: 11px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 10px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             width: 100%;
             margin-top: 24px;
-            transition: background-color 0.2s, border-color 0.2s;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .btn-danger-custom:hover {
             background-color: rgba(239, 68, 68, 0.08);
             border-color: #ef4444;
+            transform: translateY(-1px);
         }
 
-        /* Number Guess Game UI */
+        /* Game UI Styling */
+        .game-hero-banner {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(16, 185, 129, 0.12));
+            border: 1px solid var(--input-border);
+            border-radius: 16px;
+            padding: 22px;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 1px 4px rgba(255,255,255,0.05);
+        }
+        .game-hero-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 10px;
+        }
+        .game-hero-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--card-text);
+            margin: 0 0 6px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: -0.3px;
+        }
+        .game-hero-desc {
+            font-size: 13px;
+            color: var(--card-subtext);
+            margin: 0;
+            line-height: 1.4;
+        }
+
         .game-arena {
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 16px;
+            padding: 20px;
             text-align: center;
             margin-top: 15px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.04);
+            animation: fadeInScale 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         .game-status-box {
             font-size: 13px;
             font-weight: 600;
             color: var(--card-text);
-            margin: 12px 0;
-            padding: 8px;
+            margin: 14px 0;
+            padding: 12px;
             background: var(--card-bg);
-            border-radius: 6px;
+            border-radius: 10px;
             border: 1px solid var(--input-border);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
         }
         .back-to-dashboard-btn {
             background: transparent;
             border: none;
             color: var(--card-subtext);
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            padding: 0;
-            margin-bottom: 12px;
+            padding: 4px 0;
+            margin-bottom: 14px;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             width: auto;
+            transition: color 0.2s ease, transform 0.2s ease;
         }
         .back-to-dashboard-btn:hover {
             color: var(--card-text);
+            transform: translateX(-3px);
+        }
+
+        /* Coin Flip Visual Elements */
+        .coin-container {
+            width: 90px;
+            height: 90px;
+            margin: 18px auto;
+            perspective: 1200px;
+        }
+        .coin {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.15, 0.85, 0.25, 1);
+        }
+        .coin.flip-heads { transform: rotateY(0deg); }
+        .coin.flip-tails { transform: rotateY(180deg); }
+        .coin-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 800;
+            color: white;
+            backface-visibility: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35), inset 0 2px 6px rgba(255,255,255,0.4);
+            border: 4px solid #fde047;
+        }
+        .coin-face.heads { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .coin-face.tails { background: linear-gradient(135deg, #3b82f6, #1d4ed8); transform: rotateY(180deg); }
+
+        .choice-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        .choice-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--input-border);
+            background: var(--card-bg);
+            color: var(--card-text);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .choice-btn:hover { border-color: #3b82f6; transform: translateY(-2px); }
+        .choice-btn.selected {
+            border-color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.12);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+            transform: scale(1.03);
+        }
+
+        /* Spin Wheel Elements */
+        .wheel-container {
+            position: relative;
+            width: 170px;
+            height: 170px;
+            margin: 18px auto;
+            border-radius: 50%;
+            background: conic-gradient(
+                #3b82f6 0deg 72deg,
+                #10b981 72deg 144deg,
+                #f59e0b 144deg 216deg,
+                #8b5cf6 216deg 288deg,
+                #ef4444 288deg 360deg
+            );
+            border: 5px solid var(--card-bg);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.35), 0 0 0 2px var(--input-border);
+            transition: transform 3.5s cubic-bezier(0.12, 0.8, 0.15, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wheel-center {
+            width: 44px;
+            height: 44px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            border: 3px solid var(--input-border);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .wheel-pointer {
+            position: absolute;
+            top: -14px;
+            left: calc(50% - 7px);
+            width: 0;
+            height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 16px solid #ef4444;
+            z-index: 10;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
         /* Ad Simulation Overlay */
@@ -608,7 +867,7 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
+            background-color: rgba(0, 0, 0, 0.8);
             z-index: 4000;
             justify-content: center;
             align-items: center;
@@ -617,18 +876,20 @@
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
+            backdrop-filter: blur(8px);
         }
         .ad-box {
-            background: #1f2937;
-            padding: 30px;
-            border-radius: 16px;
-            border: 1px solid #374151;
+            background: var(--card-bg);
+            color: var(--card-text);
+            padding: 34px 26px;
+            border-radius: 20px;
+            border: 1px solid var(--input-border);
             max-width: 320px;
             width: 100%;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
         }
         .ad-timer {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 800;
             color: #f59e0b;
             margin: 15px 0;
@@ -640,43 +901,44 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.65);
             justify-content: center;
             align-items: center;
             z-index: 3000;
             opacity: 0;
-            transition: opacity 0.25s ease;
+            backdrop-filter: blur(5px);
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .modal-content {
             background-color: var(--card-bg);
-            padding: 22px 20px 15px 20px;
-            border-radius: 16px;
-            width: 80%;
-            max-width: 280px;
+            padding: 26px 22px 18px 22px;
+            border-radius: 20px;
+            width: 85%;
+            max-width: 300px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4);
             transform: scale(0.85);
-            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s, color 0.3s;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s, color 0.3s;
             border: 1px solid var(--input-border);
         }
         .modal-overlay.show { display: flex; opacity: 1; }
         .modal-overlay.show .modal-content { transform: scale(1); }
-        .modal-title { font-size: 17px; font-weight: 700; color: var(--card-text); margin-bottom: 8px; }
-        .modal-desc { font-size: 13px; color: var(--card-subtext); margin-bottom: 18px; line-height: 1.4; }
+        .modal-title { font-size: 18px; font-weight: 800; color: var(--card-text); margin-bottom: 8px; }
+        .modal-desc { font-size: 13px; color: var(--card-subtext); margin-bottom: 20px; line-height: 1.4; }
         .modal-btn {
-            background-color: transparent;
-            color: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
             border: none;
-            padding: 6px 0;
+            padding: 10px;
+            border-radius: 10px;
             font-size: 14px;
             font-weight: 700;
             width: 100%;
             cursor: pointer;
-            border-top: 1px solid var(--input-border);
-            margin-top: 5px;
-            transition: opacity 0.2s;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            transition: all 0.2s ease;
         }
-        .modal-btn:hover { opacity: 0.8; }
+        .modal-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4); }
     </style>
 </head>
 <body>
@@ -704,6 +966,8 @@
         <a href="#" onclick="showSection('dashboard-section')">Dashboard</a>
         <a href="#" onclick="showSection('tasks-section')">Tasks</a>
         <a href="#" onclick="showSection('game-section')">Number Guess 🎯</a>
+        <a href="#" onclick="showSection('coin-section')">Coin Flip 🪙</a>
+        <a href="#" onclick="showSection('wheel-section')">Lucky Spin 🎡</a>
         <a href="#" onclick="showSection('profile-section')">Profile</a>
         
         <div class="sidebar-toggle-container">
@@ -718,10 +982,10 @@
     <!-- Simulated Rewarded Ad Overlay -->
     <div class="ad-overlay" id="ad-overlay">
         <div class="ad-box">
-            <h3 style="margin: 0 0 10px 0; font-size: 18px;">📺 Sponsored Ad</h3>
-            <p style="font-size: 13px; color: #9ca3af; margin: 0;">Watch this ad to unlock your game round and earn rewards!</p>
+            <h3 style="margin: 0 0 10px 0; font-size: 18px; font-weight: 800;">📺 Sponsored Ad</h3>
+            <p style="font-size: 13px; color: var(--card-subtext); margin: 0; line-height: 1.4;">Watch this brief ad to unlock your round and earn cash rewards!</p>
             <div class="ad-timer" id="ad-timer-display">5</div>
-            <p style="font-size: 11px; color: #6b7280; margin: 0;">Please wait while the ad plays...</p>
+            <p style="font-size: 11px; color: var(--card-subtext); opacity: 0.7; margin: 0;">Please wait while the ad plays...</p>
         </div>
     </div>
 
@@ -729,7 +993,7 @@
     <div class="main-container">
         <div class="container">
             
-            <!-- Professional Auth Section with Tab Switcher -->
+            <!-- Auth Section -->
             <div id="auth-section" class="auth-card animate-fade">
                 <div class="auth-header">
                     <h2 id="auth-title">Welcome to EarnDesk</h2>
@@ -771,7 +1035,7 @@
                 </div>
 
                 <div class="streak-box" id="reward-section">
-                    <p style="font-size: 14px; margin: 5px 0;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
+                    <p style="font-size: 14px; margin: 6px 0; font-weight: 600;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
                     
                     <div class="streak-grid" id="streak-grid-container">
                         <div class="streak-day" id="day-1">1d<br>$0.01</div>
@@ -784,18 +1048,32 @@
                     </div>
 
                     <p id="streak-status" style="margin: 10px 0; font-size: 13px; font-weight: 500;">Checking status...</p>
-                    <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #f59e0b; color: white; display: none; font-weight: bold; padding: 10px; border-radius: 8px; border:none; width:100%; cursor:pointer;">Claim Daily Reward!</button>
+                    <button id="claim-btn" onclick="claimDailyReward()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; display: none; font-weight: bold; padding: 11px; border-radius: 10px; border:none; width:100%; cursor:pointer; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">Claim Daily Reward!</button>
                 </div>
 
-                <!-- Games Hub placed inside the Dashboard -->
+                <!-- Games Hub -->
                 <div class="games-hub-container">
-                    <div class="games-hub-title">🎮 Play & Earn Games</div>
+                    <div class="games-hub-title">🎮 Play and Earn</div>
                     <div class="games-grid">
                         <div class="game-card-item" onclick="showSection('game-section')">
                             <div class="game-card-art">🎯</div>
                             <div class="game-card-info">
                                 <h4>Number Guess</h4>
-                                <p>Guess the correct number (1-10) to win rewards!</p>
+                                <p>Guess the correct number (1-5) to win rewards!</p>
+                            </div>
+                        </div>
+                        <div class="game-card-item" onclick="showSection('coin-section')">
+                            <div class="game-card-art gold">🪙</div>
+                            <div class="game-card-info">
+                                <h4>Coin Flip</h4>
+                                <p>Choose Heads or Tails and double your wager!</p>
+                            </div>
+                        </div>
+                        <div class="game-card-item" onclick="showSection('wheel-section')">
+                            <div class="game-card-art purple">🎡</div>
+                            <div class="game-card-info">
+                                <h4>Lucky Spin Wheel</h4>
+                                <p>Spin the wheel for randomized cash multipliers!</p>
                             </div>
                         </div>
                     </div>
@@ -805,19 +1083,23 @@
             <!-- Tasks Section -->
             <div id="tasks-section" class="card-box animate-fade" style="display: none;">
                 <h2>Tasks</h2>
-                <p style="font-size: 14px; margin: 5px 0 15px 0;">Complete tasks to earn more cash.</p>
-                <p>No tasks available right now. Check back soon!</p>
+                <p style="font-size: 14px; margin: 5px 0 15px 0; color: var(--card-subtext);">Complete tasks to earn more cash.</p>
+                <p style="color: var(--card-subtext);">No tasks available right now. Check back soon!</p>
             </div>
 
             <!-- Number Guess Game Section -->
             <div id="game-section" class="card-box animate-fade" style="display: none;">
                 <button class="back-to-dashboard-btn" onclick="showSection('dashboard-section')">&#8592; Back to Dashboard</button>
-                <h2>Number Guess 🎯</h2>
-                <p style="font-size: 13px; color: var(--card-subtext); margin: 5px 0 15px 0;">Watch a quick ad to play, guess the number (1-10), and earn rewards!</p>
                 
-                <div id="game-locked-view" style="text-align: center; padding: 20px 0;">
-                    <p style="font-size: 14px; margin-bottom: 15px;">Ready to test your luck and earn?</p>
-                    <button class="btn-primary-custom" onclick="triggerAdBeforePlay()">▶ Play Game (Watch Ad)</button>
+                <div class="game-hero-banner">
+                    <div class="game-hero-badge">Play and Earn</div>
+                    <h2 class="game-hero-title">Number Guess 🎯</h2>
+                    <p class="game-hero-desc">Test your luck, guess the secret number between 1 and 5, and earn real cash rewards!</p>
+                </div>
+                
+                <div id="game-locked-view" style="text-align: center; padding: 12px 0;">
+                    <p style="font-size: 13px; color: var(--card-subtext); margin-bottom: 16px;">Watch a quick ad to unlock your round.</p>
+                    <button class="btn-primary-custom" onclick="triggerAdBeforePlay('guess')">Watch Ad & Play</button>
                 </div>
 
                 <div class="game-arena" id="game-active-view" style="display: none;">
@@ -827,18 +1109,94 @@
                     </div>
 
                     <div class="input-group" style="text-align: left;">
-                        <label class="input-label">Your Guess (1-10)</label>
-                        <input type="number" id="guess-input" min="1" max="10" placeholder="Enter number">
+                        <label class="input-label">Your Guess (1-5)</label>
+                        <input type="number" id="guess-input" min="1" max="5" placeholder="Enter number (1-5)">
                     </div>
 
                     <div class="game-status-box" id="game-status-text">Attempts left: 3. Enter a guess!</div>
 
                     <button class="btn-primary-custom" onclick="submitGuess()">Submit Guess</button>
-                    <button class="btn-danger-custom" id="reset-game-btn" onclick="resetGuessGame()" style="margin-top: 10px; display: none;">Play Another Round (New Ad)</button>
+                    <button class="btn-danger-custom" id="reset-game-btn" onclick="resetGuessGame()" style="margin-top: 12px; display: none;">Play Another Round (New Ad)</button>
                 </div>
             </div>
 
-            <!-- Profile Section -->
+            <!-- Coin Flip Game Section -->
+            <div id="coin-section" class="card-box animate-fade" style="display: none;">
+                <button class="back-to-dashboard-btn" onclick="showSection('dashboard-section')">&#8592; Back to Dashboard</button>
+                
+                <div class="game-hero-banner">
+                    <div class="game-hero-badge">Play and Earn</div>
+                    <h2 class="game-hero-title">Coin Flip 🪙</h2>
+                    <p class="game-hero-desc">Pick Heads or Tails, flip the coin, and double your staked wager instantly!</p>
+                </div>
+
+                <div id="coin-locked-view" style="text-align: center; padding: 12px 0;">
+                    <p style="font-size: 13px; color: var(--card-subtext); margin-bottom: 16px;">Watch a quick ad to unlock your round.</p>
+                    <button class="btn-primary-custom" onclick="triggerAdBeforePlay('coin')">Watch Ad & Play</button>
+                </div>
+
+                <div class="game-arena" id="coin-active-view" style="display: none;">
+                    <div class="input-group" style="text-align: left;">
+                        <label class="input-label">Wager Amount ($)</label>
+                        <input type="number" id="coin-wager-input" value="0.01" step="0.01" min="0.01">
+                    </div>
+
+                    <label class="input-label" style="text-align: left;">Select Choice</label>
+                    <div class="choice-buttons">
+                        <button class="choice-btn selected" id="choice-heads" onclick="selectCoinChoice('heads')">🪙 Heads</button>
+                        <button class="choice-btn" id="choice-tails" onclick="selectCoinChoice('tails')">🪙 Tails</button>
+                    </div>
+
+                    <div class="coin-container">
+                        <div class="coin flip-heads" id="coin-element">
+                            <div class="coin-face heads">H</div>
+                            <div class="coin-face tails">T</div>
+                        </div>
+                    </div>
+
+                    <div class="game-status-box" id="coin-status-text">Make your choice and flip!</div>
+
+                    <button class="btn-primary-custom" id="coin-flip-btn" onclick="submitCoinFlip()">Flip Coin</button>
+                    <button class="btn-danger-custom" id="coin-reset-btn" onclick="resetCoinGame()" style="margin-top: 12px; display: none;">Play Another Round (New Ad)</button>
+                </div>
+            </div>
+
+            <!-- Lucky Spin Wheel Game Section -->
+            <div id="wheel-section" class="card-box animate-fade" style="display: none;">
+                <button class="back-to-dashboard-btn" onclick="showSection('dashboard-section')">&#8592; Back to Dashboard</button>
+                
+                <div class="game-hero-banner">
+                    <div class="game-hero-badge">Play and Earn</div>
+                    <h2 class="game-hero-title">Lucky Spin 🎡</h2>
+                    <p class="game-hero-desc">Spin the wheel to land on cash multipliers and score massive rewards!</p>
+                </div>
+
+                <div id="wheel-locked-view" style="text-align: center; padding: 12px 0;">
+                    <p style="font-size: 13px; color: var(--card-subtext); margin-bottom: 16px;">Watch a quick ad to unlock your spin.</p>
+                    <button class="btn-primary-custom" onclick="triggerAdBeforePlay('wheel')">Watch Ad & Play</button>
+                </div>
+
+                <div class="game-arena" id="wheel-active-view" style="display: none;">
+                    <div class="input-group" style="text-align: left;">
+                        <label class="input-label">Stake Amount ($)</label>
+                        <input type="number" id="wheel-stake-input" value="0.01" step="0.01" min="0.01">
+                    </div>
+
+                    <div style="position: relative;">
+                        <div class="wheel-pointer"></div>
+                        <div class="wheel-container" id="wheel-element">
+                            <div class="wheel-center">SPIN</div>
+                        </div>
+                    </div>
+
+                    <div class="game-status-box" id="wheel-status-text">Stake ready. Spin the wheel!</div>
+
+                    <button class="btn-primary-custom" id="wheel-spin-btn" onclick="submitWheelSpin()">Spin Wheel</button>
+                    <button class="btn-danger-custom" id="wheel-reset-btn" onclick="resetWheelGame()" style="margin-top: 12px; display: none;">Play Another Round (New Ad)</button>
+                </div>
+            </div>
+
+            <!-- Profile Section (Updated with Gallery/File Picker) -->
             <div id="profile-section" class="card-box animate-fade" style="display: none;">
                 <div class="profile-header-flex">
                     <div class="profile-avatar-container" id="profile-avatar-box">
@@ -856,8 +1214,13 @@
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label">Profile Picture URL</label>
-                    <input type="url" id="profile-avatar-input" placeholder="https://example.com/avatar.jpg">
+                    <label class="input-label">Profile Picture (From Gallery or Files)</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="profile-file-input" accept="image/*" onchange="previewLocalImage(event)">
+                        <div class="file-upload-btn">
+                            📁 Choose Photo from Device
+                        </div>
+                    </div>
                 </div>
 
                 <div class="input-group">
@@ -903,11 +1266,19 @@
 
         let currentMode = 'signup';
         let userCurrentBalance = 0;
+        let activeGameType = 'guess';
+        let selectedBase64Image = "";
 
-        // Guess Game State Variables
-        let secretNum = Math.floor(Math.random() * 10) + 1;
+        // Guess Game State
+        let secretNum = Math.floor(Math.random() * 5) + 1;
         let attemptsLeft = 3;
         let gameActive = true;
+
+        // Coin Flip State
+        let selectedCoinChoice = 'heads';
+
+        // Wheel State
+        let wheelTotalRotation = 0;
 
         window.switchAuthMode = function(mode) {
             currentMode = mode;
@@ -938,11 +1309,7 @@
         }
 
         window.handleAuth = function() {
-            if (currentMode === 'signup') {
-                register();
-            } else {
-                login();
-            }
+            if (currentMode === 'signup') { register(); } else { login(); }
         }
 
         window.toggleSidebar = function() {
@@ -951,31 +1318,32 @@
 
         window.showSection = function(sectionId) {
             const sidebar = document.getElementById("mySidebar");
-            if(sidebar.classList.contains('open')) {
-                sidebar.classList.remove('open');
-            }
+            if(sidebar.classList.contains('open')) { sidebar.classList.remove('open'); }
             document.getElementById('dashboard-section').style.display = 'none';
             document.getElementById('tasks-section').style.display = 'none';
             document.getElementById('game-section').style.display = 'none';
+            document.getElementById('coin-section').style.display = 'none';
+            document.getElementById('wheel-section').style.display = 'none';
             document.getElementById('profile-section').style.display = 'none';
-            document.getElementById(sectionId).style.display = 'block';
+            
+            const target = document.getElementById(sectionId);
+            target.style.display = 'block';
+            target.classList.remove('animate-fade');
+            void target.offsetWidth;
+            target.classList.add('animate-fade');
         }
 
         window.toggleTheme = function() {
             const htmlTag = document.documentElement;
             const checkbox = document.getElementById('theme-checkbox');
-            if (checkbox.checked) {
-                htmlTag.removeAttribute('data-theme');
-            } else {
-                htmlTag.setAttribute('data-theme', 'light');
-            }
+            if (checkbox.checked) { htmlTag.removeAttribute('data-theme'); } 
+            else { htmlTag.setAttribute('data-theme', 'light'); }
         }
 
         window.register = async function() {
             const name = document.getElementById('reg-name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-
             if (!name) { alert("Please enter your name!"); return; }
 
             try {
@@ -995,8 +1363,7 @@
         window.login = function() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            signInWithEmailAndPassword(auth, email, password)
-                .catch((error) => { alert(error.message); });
+            signInWithEmailAndPassword(auth, email, password).catch((error) => { alert(error.message); });
         }
 
         window.logout = function() { signOut(auth); }
@@ -1016,33 +1383,44 @@
             avatarBox.innerHTML = `<span id="profile-initials">${initial}</span>`;
         }
 
+        // Local Image Preview Handler for Gallery / Files
+        window.previewLocalImage = function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedBase64Image = e.target.result;
+                    renderAvatar("User", selectedBase64Image);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
         window.updateProfileData = async function() {
             const user = auth.currentUser;
             if (!user) return;
             const newName = document.getElementById('profile-name-input').value;
-            const newAvatar = document.getElementById('profile-avatar-input').value;
-
             if (!newName) { alert("Please enter a username!"); return; }
 
             const docRef = doc(db, "users", user.uid);
-            await updateDoc(docRef, { 
-                name: newName,
-                avatar: newAvatar 
-            });
+            let updatePayload = { name: newName };
+            if (selectedBase64Image !== "") {
+                updatePayload.avatar = selectedBase64Image;
+            }
+
+            await updateDoc(docRef, updatePayload);
             
             document.getElementById('user-welcome').innerText = "Welcome, " + newName + "!";
             document.getElementById('profile-display-name').innerText = newName;
-            renderAvatar(newName, newAvatar);
             alert("Profile updated successfully!");
         }
 
         window.toggleRewardBox = function() {
-            const rewardBox = document.getElementById('reward-section');
-            rewardBox.classList.toggle('open');
+            document.getElementById('reward-section').classList.toggle('open');
         }
 
-        // Ad Trigger Flow before Playing Game
-        window.triggerAdBeforePlay = function() {
+        window.triggerAdBeforePlay = function(gameType) {
+            activeGameType = gameType;
             const adOverlay = document.getElementById('ad-overlay');
             const timerDisplay = document.getElementById('ad-timer-display');
             adOverlay.style.display = 'flex';
@@ -1056,37 +1434,32 @@
                 if (timeLeft <= 0) {
                     clearInterval(countdown);
                     adOverlay.style.display = 'none';
-                    // Unlock game view
-                    document.getElementById('game-locked-view').style.display = 'none';
-                    document.getElementById('game-active-view').style.display = 'block';
+                    if (gameType === 'guess') {
+                        document.getElementById('game-locked-view').style.display = 'none';
+                        document.getElementById('game-active-view').style.display = 'block';
+                    } else if (gameType === 'coin') {
+                        document.getElementById('coin-locked-view').style.display = 'none';
+                        document.getElementById('coin-active-view').style.display = 'block';
+                    } else if (gameType === 'wheel') {
+                        document.getElementById('wheel-locked-view').style.display = 'none';
+                        document.getElementById('wheel-active-view').style.display = 'block';
+                    }
                 }
             }, 1000);
         }
 
-        // Number Guess Logic
+        // Guess Game Logic
         window.submitGuess = async function() {
             const user = auth.currentUser;
             if (!user || !gameActive) return;
 
             const wager = parseFloat(document.getElementById('wager-input').value);
-            const guessInput = document.getElementById('guess-input');
-            const guess = parseInt(guessInput.value);
+            const guess = parseInt(document.getElementById('guess-input').value);
             const statusBox = document.getElementById('game-status-text');
 
-            if (isNaN(wager) || wager <= 0) {
-                alert("Please enter a valid wager amount.");
-                return;
-            }
-
-            if (userCurrentBalance < wager) {
-                alert("Insufficient funds for this wager!");
-                return;
-            }
-
-            if (isNaN(guess) || guess < 1 || guess > 10) {
-                alert("Please enter a valid number between 1 and 10.");
-                return;
-            }
+            if (isNaN(wager) || wager <= 0) { alert("Please enter a valid wager amount."); return; }
+            if (userCurrentBalance < wager) { alert("Insufficient funds for this wager!"); return; }
+            if (isNaN(guess) || guess < 1 || guess > 5) { alert("Please enter a valid number between 1 and 5."); return; }
 
             const docRef = doc(db, "users", user.uid);
 
@@ -1113,7 +1486,7 @@
         }
 
         window.resetGuessGame = function() {
-            secretNum = Math.floor(Math.random() * 10) + 1;
+            secretNum = Math.floor(Math.random() * 5) + 1;
             attemptsLeft = 3;
             gameActive = true;
             document.getElementById('guess-input').value = '';
@@ -1123,10 +1496,121 @@
             document.getElementById('reset-game-btn').style.display = 'none';
         }
 
+        // Coin Flip Logic
+        window.selectCoinChoice = function(choice) {
+            selectedCoinChoice = choice;
+            document.getElementById('choice-heads').classList.toggle('selected', choice === 'heads');
+            document.getElementById('choice-tails').classList.toggle('selected', choice === 'tails');
+        }
+
+        window.submitCoinFlip = async function() {
+            const user = auth.currentUser;
+            if (!user) return;
+            const wager = parseFloat(document.getElementById('coin-wager-input').value);
+            const statusBox = document.getElementById('coin-status-text');
+            const coinEl = document.getElementById('coin-element');
+
+            if (isNaN(wager) || wager <= 0) { alert("Please enter a valid wager amount."); return; }
+            if (userCurrentBalance < wager) { alert("Insufficient funds for this wager!"); return; }
+
+            document.getElementById('coin-flip-btn').disabled = true;
+            statusBox.innerText = "Flipping coin...";
+
+            const outcome = Math.random() < 0.5 ? 'heads' : 'tails';
+            coinEl.className = outcome === 'heads' ? 'coin flip-heads' : 'coin flip-tails';
+
+            setTimeout(async () => {
+                const docRef = doc(db, "users", user.uid);
+                if (selectedCoinChoice === outcome) {
+                    await updateDoc(docRef, { balance: increment(wager) });
+                    statusBox.innerText = `It's ${outcome.toUpperCase()}! You won +$${wager.toFixed(2)}!`;
+                    showModal("Coin Flip Won! 🎉", `Spot on! The coin landed on ${outcome.toUpperCase()}. You won +$${wager.toFixed(2)}.`);
+                } else {
+                    await updateDoc(docRef, { balance: increment(-wager) });
+                    statusBox.innerText = `It's ${outcome.toUpperCase()}! You lost -$${wager.toFixed(2)}.`;
+                    showModal("Coin Flip Lost 😢", `Bad luck! The coin landed on ${outcome.toUpperCase()}. -$${wager.toFixed(2)} deducted.`);
+                }
+                document.getElementById('coin-reset-btn').style.display = 'block';
+                fetchUserData(user);
+            }, 1200);
+        }
+
+        window.resetCoinGame = function() {
+            document.getElementById('coin-active-view').style.display = 'none';
+            document.getElementById('coin-locked-view').style.display = 'block';
+            document.getElementById('coin-reset-btn').style.display = 'none';
+            document.getElementById('coin-flip-btn').disabled = false;
+            document.getElementById('coin-status-text').innerText = "Make your choice and flip!";
+        }
+
+        // Lucky Spin Wheel Logic
+        window.submitWheelSpin = async function() {
+            const user = auth.currentUser;
+            if (!user) return;
+            const stake = parseFloat(document.getElementById('wheel-stake-input').value);
+            const statusBox = document.getElementById('wheel-status-text');
+            const wheelEl = document.getElementById('wheel-element');
+
+            if (isNaN(stake) || stake <= 0) { alert("Please enter a valid stake amount."); return; }
+            if (userCurrentBalance < stake) { alert("Insufficient funds for this spin!"); return; }
+
+            document.getElementById('wheel-spin-btn').disabled = true;
+            statusBox.innerText = "Spinning the wheel...";
+
+            const multipliers = [0, 0.5, 1, 2, 3];
+            const weights = [0.35, 0.25, 0.2, 0.15, 0.05];
+            
+            let randomVal = Math.random();
+            let cumulative = 0;
+            let chosenMultiplier = 1;
+            let sliceIndex = 2;
+
+            for (let i = 0; i < weights.length; i++) {
+                cumulative += weights[i];
+                if (randomVal <= cumulative) {
+                    chosenMultiplier = multipliers[i];
+                    sliceIndex = i;
+                    break;
+                }
+            }
+
+            const sliceDeg = 72;
+            const extraSpins = 360 * 6;
+            wheelTotalRotation += extraSpins + (sliceIndex * sliceDeg) + (sliceDeg / 2);
+            wheelEl.style.transform = `rotate(${wheelTotalRotation}deg)`;
+
+            setTimeout(async () => {
+                const docRef = doc(db, "users", user.uid);
+                const netChange = (chosenMultiplier - 1) * stake;
+                if (netChange !== 0) { await updateDoc(docRef, { balance: increment(netChange) }); }
+
+                if (chosenMultiplier === 0) {
+                    statusBox.innerText = `Landing on 0x multiplier! -$${stake.toFixed(2)}`;
+                    showModal("Spin Result 😢", `The wheel landed on 0x. You lost your stake of -$${stake.toFixed(2)}.`);
+                } else if (chosenMultiplier === 1) {
+                    statusBox.innerText = `Landed on 1x! Stake returned.`;
+                    showModal("Spin Result", `The wheel landed on 1x. Your stake was returned safely.`);
+                } else {
+                    statusBox.innerText = `Jackpot! Landed on ${chosenMultiplier}x! +$${netChange.toFixed(2)}`;
+                    showModal("Wheel Jackpot! 🎉", `Amazing! The wheel landed on ${chosenMultiplier}x! You won +$${netChange.toFixed(2)}.`);
+                }
+
+                document.getElementById('wheel-reset-btn').style.display = 'block';
+                fetchUserData(user);
+            }, 3500);
+        }
+
+        window.resetWheelGame = function() {
+            document.getElementById('wheel-active-view').style.display = 'none';
+            document.getElementById('wheel-locked-view').style.display = 'block';
+            document.getElementById('wheel-reset-btn').style.display = 'none';
+            document.getElementById('wheel-spin-btn').disabled = false;
+            document.getElementById('wheel-status-text').innerText = "Stake ready. Spin the wheel!";
+        }
+
         function showModal(title, text) {
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-text').innerText = text;
-
             const modal = document.getElementById('custom-modal');
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('show'), 10);
@@ -1135,7 +1619,7 @@
         window.closeModal = function() {
             const modal = document.getElementById('custom-modal');
             modal.classList.remove('show');
-            setTimeout(() => modal.style.display = 'none', 250);
+            setTimeout(() => modal.style.display = 'none', 300);
         }
 
         function getTodayDate() { return new Date().toISOString().split('T')[0]; }
@@ -1160,7 +1644,6 @@
                 document.getElementById('balance').innerText = "$" + userCurrentBalance.toFixed(2);
                 document.getElementById('user-welcome').innerText = "Welcome, " + userName + "!";
                 document.getElementById('profile-name-input').value = userName;
-                document.getElementById('profile-avatar-input').value = userAvatar;
                 document.getElementById('profile-display-name').innerText = userName;
                 document.getElementById('profile-display-email').innerText = userEmail;
                 document.getElementById('profile-email-input').value = userEmail;
@@ -1171,11 +1654,8 @@
                 for (let i = 1; i <= 7; i++) {
                     const dayBox = document.getElementById(`day-${i}`);
                     if (dayBox) {
-                        if (i === currentStreak) {
-                            dayBox.classList.add('active');
-                        } else {
-                            dayBox.classList.remove('active');
-                        }
+                        if (i === currentStreak) { dayBox.classList.add('active'); } 
+                        else { dayBox.classList.remove('active'); }
                     }
                 }
 
@@ -1190,24 +1670,9 @@
                     streakStatus.innerText = "Reward claimed for today! Come back tomorrow.";
                 } else {
                     claimBtn.style.display = 'block';
-                    if (lastLogin === yesterday) {
-                        streakStatus.innerText = "Keep your streak going to earn more cash!";
-                    } else if (lastLogin !== "") {
-                        streakStatus.innerText = "Streak reset because you missed a day!";
-                    } else {
-                        streakStatus.innerText = "Claim your first daily reward!";
-                    }
+                    if (lastLogin === yesterday) { streakStatus.innerText = "Keep your streak going to earn more cash!"; } 
+                    else { streakStatus.innerText = "Claim your daily reward!"; }
                 }
-            } else {
-                await setDoc(docRef, {
-                    name: "User",
-                    email: user.email,
-                    avatar: "",
-                    balance: 0.00,
-                    streak: 0,
-                    lastLoginDate: ""
-                });
-                fetchUserData(user);
             }
         }
 
@@ -1236,16 +1701,7 @@
                 lastLoginDate: today
             });
 
-            const messages = {
-                1: "Keep it up!",
-                2: "You are on fire!",
-                3: "Unstoppable momentum!",
-                4: "Crushing goals!",
-                5: "Halfway to legendary status!",
-                6: "Almost at the ultimate prize!",
-                7: "Legendary streak! Maximum bonus unlocked!"
-            };
-            showModal(`Day ${newStreak} Claimed!`, `Success! +$${cashEarned.toFixed(2)} added to your wallet.\n${messages[newStreak] || "Keep up the great work!"}`);
+            showModal(`Day ${newStreak} Claimed!`, `Success! +$${cashEarned.toFixed(2)} added to your wallet.`);
             fetchUserData(user);
         }
 
@@ -1253,16 +1709,10 @@
             if (user) {
                 document.getElementById('auth-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
-                document.getElementById('tasks-section').style.display = 'none';
-                document.getElementById('game-section').style.display = 'none';
-                document.getElementById('profile-section').style.display = 'none';
                 fetchUserData(user);
             } else {
                 document.getElementById('auth-section').style.display = 'block';
                 document.getElementById('dashboard-section').style.display = 'none';
-                document.getElementById('tasks-section').style.display = 'none';
-                document.getElementById('game-section').style.display = 'none';
-                document.getElementById('profile-section').style.display = 'none';
             }
         });
     </script>
