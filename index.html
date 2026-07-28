@@ -150,7 +150,6 @@
             cursor: pointer;
             width: 230px;
         }
-        /* Staggered animation delays for items inside open sidebar */
         .sidebar.open a:nth-child(2) { opacity: 1; transform: translateX(0); transition-delay: 0.05s; }
         .sidebar.open a:nth-child(3) { opacity: 1; transform: translateX(0); transition-delay: 0.1s; }
         .sidebar.open a:nth-child(4) { opacity: 1; transform: translateX(0); transition-delay: 0.15s; }
@@ -234,15 +233,9 @@
         }
 
         @keyframes subtlePulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 8px rgba(0, 123, 255, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
-            }
+            0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(0, 123, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
         }
 
         .animate-fade {
@@ -282,7 +275,7 @@
             color: var(--card-subtext);
         }
 
-        /* Top-Right Floating Daily Reward Button with Pulse Effect */
+        /* Top-Right Floating Daily Reward Button */
         .dashboard-top-action {
             display: flex;
             justify-content: flex-end;
@@ -396,7 +389,7 @@
             transform: scale(1.05);
         }
 
-        /* Animated Custom Modal Popup */
+        /* Smaller Theme-Adaptive Custom Modal Popup */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -413,14 +406,14 @@
         }
         .modal-content {
             background-color: var(--card-bg);
-            padding: 25px 20px;
-            border-radius: 12px;
-            width: 85%;
-            max-width: 320px;
+            padding: 22px 20px 15px 20px;
+            border-radius: 16px;
+            width: 80%;
+            max-width: 280px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            transform: scale(0.8);
-            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            transform: scale(0.85);
+            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s, color 0.3s;
         }
         .modal-overlay.show {
             display: flex;
@@ -429,25 +422,33 @@
         .modal-overlay.show .modal-content {
             transform: scale(1);
         }
-        .modal-content p {
-            font-size: 16px;
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
             color: var(--card-text);
-            margin-bottom: 20px;
+            margin-bottom: 8px;
+        }
+        .modal-desc {
+            font-size: 13px;
+            color: var(--card-subtext);
+            margin-bottom: 18px;
             line-height: 1.4;
         }
         .modal-btn {
             background-color: transparent;
-            color: #28a745;
+            color: #007bff;
             border: none;
-            padding: 10px 0;
-            border-radius: 6px;
-            font-size: 18px;
+            padding: 6px 0;
+            font-size: 15px;
             font-weight: bold;
             width: 100%;
             cursor: pointer;
+            border-top: 1px solid var(--input-border);
+            margin-top: 5px;
+            transition: opacity 0.2s;
         }
         .modal-btn:hover {
-            background-color: var(--sidebar-hover);
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -513,7 +514,7 @@
                     <button class="daily-reward-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
                 </div>
 
-                <!-- Daily Reward Box Content (Animated Slide-Down) -->
+                <!-- Daily Reward Box Content -->
                 <div class="streak-box" id="reward-section">
                     <p style="font-size: 14px; margin: 5px 0;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
                     
@@ -553,11 +554,12 @@
         </div>
     </div>
 
-    <!-- Custom Popup Modal -->
+    <!-- Custom Popup Modal with Theme Support and Day Encouragement Messages -->
     <div class="modal-overlay" id="custom-modal">
         <div class="modal-content">
-            <p id="modal-text">Reward claimed for today! Come back tomorrow</p>
-            <button class="modal-btn" onclick="closeModal()">Ok</button>
+            <div class="modal-title" id="modal-title">Day 1 Claimed!</div>
+            <div class="modal-desc" id="modal-text">Success! +$0.01 added to your wallet. Keep it up!</div>
+            <button class="modal-btn" onclick="closeModal()">Claim</button>
         </div>
     </div>
 
@@ -667,8 +669,23 @@
             rewardBox.classList.toggle('open');
         }
 
-        function showModal(message) {
-            document.getElementById('modal-text').innerText = message;
+        function showModal(streakDay, cashAmount) {
+            document.getElementById('modal-title').innerText = `Day ${streakDay} Claimed!`;
+            
+            // Encouragement messages mapping for 1 to 7 days
+            const messages = {
+                1: "Keep it up!",
+                2: "You are on fire!",
+                3: "Unstoppable momentum!",
+                4: "Crushing goals!",
+                5: "Halfway to legendary status!",
+                6: "Almost at the ultimate prize!",
+                7: "Legendary streak! Maximum bonus unlocked!"
+            };
+
+            const encouragement = messages[streakDay] || "Keep up the great work!";
+            document.getElementById('modal-text').innerText = `Success! +$${cashAmount.toFixed(2)} added to your wallet.\n${encouragement} (Streak Day ${streakDay}/7)`;
+
             const modal = document.getElementById('custom-modal');
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('show'), 10);
@@ -777,7 +794,7 @@
                 lastLoginDate: today
             });
 
-            showModal("Reward claimed for today! Come back tomorrow");
+            showModal(newStreak, cashEarned);
 
             fetchUserData(user);
         }
