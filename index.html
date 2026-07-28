@@ -155,9 +155,10 @@
             width: 230px;
         }
         .sidebar.open a:nth-child(2) { opacity: 1; transform: translateX(0); transition-delay: 0.05s; }
-        .sidebar.open a:nth-child(3) { opacity: 1; transform: translateX(0); transition-delay: 0.1s; }
-        .sidebar.open a:nth-child(4) { opacity: 1; transform: translateX(0); transition-delay: 0.15s; }
-        .sidebar.open .sidebar-toggle-container { opacity: 1; transform: translateX(0); transition-delay: 0.2s; }
+        .sidebar.open a:nth-child(3) { opacity: 1; transform: translateX(0); transition-delay: 0.08s; }
+        .sidebar.open a:nth-child(4) { opacity: 1; transform: translateX(0); transition-delay: 0.11s; }
+        .sidebar.open a:nth-child(5) { opacity: 1; transform: translateX(0); transition-delay: 0.14s; }
+        .sidebar.open .sidebar-toggle-container { opacity: 1; transform: translateX(0); transition-delay: 0.18s; }
 
         .sidebar a:hover {
             background-color: var(--sidebar-hover);
@@ -234,7 +235,7 @@
         .main-container {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             padding: 24px 16px;
             min-height: calc(100vh - 80px);
             box-sizing: border-box;
@@ -358,7 +359,7 @@
         .welcome-top-bar h2 {
             font-size: 18px;
             margin: 0;
-            color: var(--text-color);
+            color: var(--card-text);
         }
         .welcome-top-bar p {
             font-size: 13px;
@@ -430,6 +431,66 @@
             transform: scale(1.05);
         }
 
+        /* Dashboard Games Hub Section */
+        .games-hub-container {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--input-border);
+        }
+        .games-hub-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--card-text);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .games-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        .game-card-item {
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .game-card-item:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        .game-card-art {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
+        }
+        .game-card-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin: 0 0 3px 0;
+            color: var(--card-text);
+        }
+        .game-card-info p {
+            font-size: 11px;
+            color: var(--card-subtext);
+            margin: 0;
+        }
+
         /* Profile Specific Elements */
         .profile-header-flex {
             display: flex;
@@ -439,19 +500,25 @@
             padding-bottom: 20px;
             border-bottom: 1px solid var(--input-border);
         }
-        .profile-avatar-placeholder {
+        .profile-avatar-container {
             width: 52px;
             height: 52px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            font-weight: 700;
-            font-size: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
             box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
-            flex-shrink: 0;
+        }
+        .profile-avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .profile-user-titles h3 {
             font-size: 16px;
@@ -498,7 +565,76 @@
             border-color: #ef4444;
         }
 
-        /* Smaller Theme-Adaptive Custom Modal Popup */
+        /* Number Guess Game UI */
+        .game-arena {
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .game-status-box {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--card-text);
+            margin: 12px 0;
+            padding: 8px;
+            background: var(--card-bg);
+            border-radius: 6px;
+            border: 1px solid var(--input-border);
+        }
+        .back-to-dashboard-btn {
+            background: transparent;
+            border: none;
+            color: var(--card-subtext);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0;
+            margin-bottom: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            width: auto;
+        }
+        .back-to-dashboard-btn:hover {
+            color: var(--card-text);
+        }
+
+        /* Ad Simulation Overlay */
+        .ad-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 4000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .ad-box {
+            background: #1f2937;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #374151;
+            max-width: 320px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .ad-timer {
+            font-size: 28px;
+            font-weight: 800;
+            color: #f59e0b;
+            margin: 15px 0;
+        }
+
+        /* Custom Popup Modal */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -567,6 +703,7 @@
         <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
         <a href="#" onclick="showSection('dashboard-section')">Dashboard</a>
         <a href="#" onclick="showSection('tasks-section')">Tasks</a>
+        <a href="#" onclick="showSection('game-section')">Number Guess 🎯</a>
         <a href="#" onclick="showSection('profile-section')">Profile</a>
         
         <div class="sidebar-toggle-container">
@@ -575,6 +712,16 @@
                 <input type="checkbox" id="theme-checkbox" checked onchange="toggleTheme()">
                 <span class="slider"></span>
             </label>
+        </div>
+    </div>
+
+    <!-- Simulated Rewarded Ad Overlay -->
+    <div class="ad-overlay" id="ad-overlay">
+        <div class="ad-box">
+            <h3 style="margin: 0 0 10px 0; font-size: 18px;">📺 Sponsored Ad</h3>
+            <p style="font-size: 13px; color: #9ca3af; margin: 0;">Watch this ad to unlock your game round and earn rewards!</p>
+            <div class="ad-timer" id="ad-timer-display">5</div>
+            <p style="font-size: 11px; color: #6b7280; margin: 0;">Please wait while the ad plays...</p>
         </div>
     </div>
 
@@ -613,13 +760,13 @@
             </div>
 
             <!-- Dashboard Section -->
-            <div id="dashboard-section" style="display: none;">
-                <div class="welcome-top-bar animate-fade">
+            <div id="dashboard-section" class="card-box animate-fade" style="display: none;">
+                <div class="welcome-top-bar">
                     <h2 id="user-welcome">Welcome, User!</h2>
                     <p>Manage your earnings and rewards below.</p>
                 </div>
 
-                <div class="dashboard-top-action animate-fade">
+                <div class="dashboard-top-action">
                     <button class="daily-reward-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
                 </div>
 
@@ -639,19 +786,64 @@
                     <p id="streak-status" style="margin: 10px 0; font-size: 13px; font-weight: 500;">Checking status...</p>
                     <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #f59e0b; color: white; display: none; font-weight: bold; padding: 10px; border-radius: 8px; border:none; width:100%; cursor:pointer;">Claim Daily Reward!</button>
                 </div>
+
+                <!-- Games Hub placed inside the Dashboard -->
+                <div class="games-hub-container">
+                    <div class="games-hub-title">🎮 Play & Earn Games</div>
+                    <div class="games-grid">
+                        <div class="game-card-item" onclick="showSection('game-section')">
+                            <div class="game-card-art">🎯</div>
+                            <div class="game-card-info">
+                                <h4>Number Guess</h4>
+                                <p>Guess the correct number (1-10) to win rewards!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Tasks Section Placeholder -->
+            <!-- Tasks Section -->
             <div id="tasks-section" class="card-box animate-fade" style="display: none;">
                 <h2>Tasks</h2>
                 <p style="font-size: 14px; margin: 5px 0 15px 0;">Complete tasks to earn more cash.</p>
                 <p>No tasks available right now. Check back soon!</p>
             </div>
 
-            <!-- Profile Section (Redesigned) -->
+            <!-- Number Guess Game Section -->
+            <div id="game-section" class="card-box animate-fade" style="display: none;">
+                <button class="back-to-dashboard-btn" onclick="showSection('dashboard-section')">&#8592; Back to Dashboard</button>
+                <h2>Number Guess 🎯</h2>
+                <p style="font-size: 13px; color: var(--card-subtext); margin: 5px 0 15px 0;">Watch a quick ad to play, guess the number (1-10), and earn rewards!</p>
+                
+                <div id="game-locked-view" style="text-align: center; padding: 20px 0;">
+                    <p style="font-size: 14px; margin-bottom: 15px;">Ready to test your luck and earn?</p>
+                    <button class="btn-primary-custom" onclick="triggerAdBeforePlay()">▶ Play Game (Watch Ad)</button>
+                </div>
+
+                <div class="game-arena" id="game-active-view" style="display: none;">
+                    <div class="input-group" style="text-align: left;">
+                        <label class="input-label">Wager Amount ($)</label>
+                        <input type="number" id="wager-input" value="0.01" step="0.01" min="0.01">
+                    </div>
+
+                    <div class="input-group" style="text-align: left;">
+                        <label class="input-label">Your Guess (1-10)</label>
+                        <input type="number" id="guess-input" min="1" max="10" placeholder="Enter number">
+                    </div>
+
+                    <div class="game-status-box" id="game-status-text">Attempts left: 3. Enter a guess!</div>
+
+                    <button class="btn-primary-custom" onclick="submitGuess()">Submit Guess</button>
+                    <button class="btn-danger-custom" id="reset-game-btn" onclick="resetGuessGame()" style="margin-top: 10px; display: none;">Play Another Round (New Ad)</button>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
             <div id="profile-section" class="card-box animate-fade" style="display: none;">
                 <div class="profile-header-flex">
-                    <div class="profile-avatar-placeholder" id="profile-initials">U</div>
+                    <div class="profile-avatar-container" id="profile-avatar-box">
+                        <span id="profile-initials">U</span>
+                    </div>
                     <div class="profile-user-titles">
                         <h3 id="profile-display-name">User Account</h3>
                         <p id="profile-display-email">name@example.com</p>
@@ -664,11 +856,16 @@
                 </div>
 
                 <div class="input-group">
+                    <label class="input-label">Profile Picture URL</label>
+                    <input type="url" id="profile-avatar-input" placeholder="https://example.com/avatar.jpg">
+                </div>
+
+                <div class="input-group">
                     <label class="input-label">Email Address</label>
                     <input type="email" id="profile-email-input" disabled placeholder="Email address">
                 </div>
 
-                <button class="btn-primary-custom" onclick="updateUsername()">Save Changes</button>
+                <button class="btn-primary-custom" onclick="updateProfileData()">Save Changes</button>
 
                 <button class="btn-danger-custom" onclick="logout()">Log Out</button>
             </div>
@@ -676,12 +873,12 @@
         </div>
     </div>
 
-    <!-- Custom Popup Modal with Day Encouragements -->
+    <!-- Custom Popup Modal -->
     <div class="modal-overlay" id="custom-modal">
         <div class="modal-content">
-            <div class="modal-title" id="modal-title">Day 1 Claimed!</div>
-            <div class="modal-desc" id="modal-text">Success! +$0.01 added to your wallet. Keep it up!</div>
-            <button class="modal-btn" onclick="closeModal()">Claim</button>
+            <div class="modal-title" id="modal-title">Notice</div>
+            <div class="modal-desc" id="modal-text">Action completed successfully.</div>
+            <button class="modal-btn" onclick="closeModal()">Okay</button>
         </div>
     </div>
 
@@ -705,6 +902,12 @@
         const db = getFirestore(app);
 
         let currentMode = 'signup';
+        let userCurrentBalance = 0;
+
+        // Guess Game State Variables
+        let secretNum = Math.floor(Math.random() * 10) + 1;
+        let attemptsLeft = 3;
+        let gameActive = true;
 
         window.switchAuthMode = function(mode) {
             currentMode = mode;
@@ -747,9 +950,13 @@
         }
 
         window.showSection = function(sectionId) {
-            toggleSidebar();
+            const sidebar = document.getElementById("mySidebar");
+            if(sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
             document.getElementById('dashboard-section').style.display = 'none';
             document.getElementById('tasks-section').style.display = 'none';
+            document.getElementById('game-section').style.display = 'none';
             document.getElementById('profile-section').style.display = 'none';
             document.getElementById(sectionId).style.display = 'block';
         }
@@ -777,6 +984,7 @@
                 await setDoc(doc(db, "users", user.uid), {
                     name: name,
                     email: user.email,
+                    avatar: "",
                     balance: 0.00,
                     streak: 0,
                     lastLoginDate: ""
@@ -793,19 +1001,39 @@
 
         window.logout = function() { signOut(auth); }
 
-        window.updateUsername = async function() {
+        function renderAvatar(name, avatarUrl) {
+            const avatarBox = document.getElementById('profile-avatar-box');
+            if (avatarUrl && avatarUrl.trim() !== "") {
+                avatarBox.innerHTML = `<img src="${avatarUrl}" alt="Profile Avatar" onerror="this.onerror=null; renderFallbackInitials('${name}')">`;
+            } else {
+                renderFallbackInitials(name);
+            }
+        }
+
+        function renderFallbackInitials(name) {
+            const avatarBox = document.getElementById('profile-avatar-box');
+            const initial = name && name.length > 0 ? name.charAt(0).toUpperCase() : "U";
+            avatarBox.innerHTML = `<span id="profile-initials">${initial}</span>`;
+        }
+
+        window.updateProfileData = async function() {
             const user = auth.currentUser;
             if (!user) return;
             const newName = document.getElementById('profile-name-input').value;
+            const newAvatar = document.getElementById('profile-avatar-input').value;
+
             if (!newName) { alert("Please enter a username!"); return; }
 
             const docRef = doc(db, "users", user.uid);
-            await updateDoc(docRef, { name: newName });
+            await updateDoc(docRef, { 
+                name: newName,
+                avatar: newAvatar 
+            });
             
             document.getElementById('user-welcome').innerText = "Welcome, " + newName + "!";
             document.getElementById('profile-display-name').innerText = newName;
-            document.getElementById('profile-initials').innerText = newName.charAt(0).toUpperCase();
-            alert("Username updated successfully!");
+            renderAvatar(newName, newAvatar);
+            alert("Profile updated successfully!");
         }
 
         window.toggleRewardBox = function() {
@@ -813,19 +1041,91 @@
             rewardBox.classList.toggle('open');
         }
 
-        function showModal(streakDay, cashAmount) {
-            document.getElementById('modal-title').innerText = `Day ${streakDay} Claimed!`;
-            const messages = {
-                1: "Keep it up!",
-                2: "You are on fire!",
-                3: "Unstoppable momentum!",
-                4: "Crushing goals!",
-                5: "Halfway to legendary status!",
-                6: "Almost at the ultimate prize!",
-                7: "Legendary streak! Maximum bonus unlocked!"
-            };
-            const encouragement = messages[streakDay] || "Keep up the great work!";
-            document.getElementById('modal-text').innerText = `Success! +$${cashAmount.toFixed(2)} added to your wallet.\n${encouragement} (Streak Day ${streakDay}/7)`;
+        // Ad Trigger Flow before Playing Game
+        window.triggerAdBeforePlay = function() {
+            const adOverlay = document.getElementById('ad-overlay');
+            const timerDisplay = document.getElementById('ad-timer-display');
+            adOverlay.style.display = 'flex';
+            
+            let timeLeft = 5;
+            timerDisplay.innerText = timeLeft;
+
+            const countdown = setInterval(() => {
+                timeLeft--;
+                timerDisplay.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    adOverlay.style.display = 'none';
+                    // Unlock game view
+                    document.getElementById('game-locked-view').style.display = 'none';
+                    document.getElementById('game-active-view').style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        // Number Guess Logic
+        window.submitGuess = async function() {
+            const user = auth.currentUser;
+            if (!user || !gameActive) return;
+
+            const wager = parseFloat(document.getElementById('wager-input').value);
+            const guessInput = document.getElementById('guess-input');
+            const guess = parseInt(guessInput.value);
+            const statusBox = document.getElementById('game-status-text');
+
+            if (isNaN(wager) || wager <= 0) {
+                alert("Please enter a valid wager amount.");
+                return;
+            }
+
+            if (userCurrentBalance < wager) {
+                alert("Insufficient funds for this wager!");
+                return;
+            }
+
+            if (isNaN(guess) || guess < 1 || guess > 10) {
+                alert("Please enter a valid number between 1 and 10.");
+                return;
+            }
+
+            const docRef = doc(db, "users", user.uid);
+
+            if (guess === secretNum) {
+                gameActive = false;
+                await updateDoc(docRef, { balance: increment(wager) });
+                statusBox.innerText = `Correct! The number was ${secretNum}. You won +$${wager.toFixed(2)}!`;
+                showModal("You Won! 🎉", `Fantastic! You guessed the secret number and won +$${wager.toFixed(2)}.`);
+                document.getElementById('reset-game-btn').style.display = 'block';
+            } else {
+                attemptsLeft--;
+                if (attemptsLeft > 0) {
+                    const hint = guess < secretNum ? "Too low!" : "Too high!";
+                    statusBox.innerText = `${hint} Attempts left: ${attemptsLeft}`;
+                } else {
+                    gameActive = false;
+                    await updateDoc(docRef, { balance: increment(-wager) });
+                    statusBox.innerText = `Out of tries! The secret number was ${secretNum}. -$${wager.toFixed(2)}`;
+                    showModal("Game Over 😢", `You ran out of attempts. The secret number was ${secretNum}. -$${wager.toFixed(2)} deducted.`);
+                    document.getElementById('reset-game-btn').style.display = 'block';
+                }
+            }
+            fetchUserData(user);
+        }
+
+        window.resetGuessGame = function() {
+            secretNum = Math.floor(Math.random() * 10) + 1;
+            attemptsLeft = 3;
+            gameActive = true;
+            document.getElementById('guess-input').value = '';
+            document.getElementById('game-status-text').innerText = "Attempts left: 3. Enter a guess!";
+            document.getElementById('game-active-view').style.display = 'none';
+            document.getElementById('game-locked-view').style.display = 'block';
+            document.getElementById('reset-game-btn').style.display = 'none';
+        }
+
+        function showModal(title, text) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-text').innerText = text;
 
             const modal = document.getElementById('custom-modal');
             modal.style.display = 'flex';
@@ -851,18 +1151,21 @@
             
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                const currentBalance = data.balance || 0;
+                userCurrentBalance = data.balance || 0;
                 const currentStreak = data.streak || 0;
                 const userName = data.name || "User";
                 const userEmail = data.email || user.email;
+                const userAvatar = data.avatar || "";
 
-                document.getElementById('balance').innerText = "$" + currentBalance.toFixed(2);
+                document.getElementById('balance').innerText = "$" + userCurrentBalance.toFixed(2);
                 document.getElementById('user-welcome').innerText = "Welcome, " + userName + "!";
                 document.getElementById('profile-name-input').value = userName;
+                document.getElementById('profile-avatar-input').value = userAvatar;
                 document.getElementById('profile-display-name').innerText = userName;
                 document.getElementById('profile-display-email').innerText = userEmail;
                 document.getElementById('profile-email-input').value = userEmail;
-                document.getElementById('profile-initials').innerText = userName.charAt(0).toUpperCase();
+                
+                renderAvatar(userName, userAvatar);
                 document.getElementById('streak-count').innerText = currentStreak;
 
                 for (let i = 1; i <= 7; i++) {
@@ -899,6 +1202,7 @@
                 await setDoc(docRef, {
                     name: "User",
                     email: user.email,
+                    avatar: "",
                     balance: 0.00,
                     streak: 0,
                     lastLoginDate: ""
@@ -932,7 +1236,16 @@
                 lastLoginDate: today
             });
 
-            showModal(newStreak, cashEarned);
+            const messages = {
+                1: "Keep it up!",
+                2: "You are on fire!",
+                3: "Unstoppable momentum!",
+                4: "Crushing goals!",
+                5: "Halfway to legendary status!",
+                6: "Almost at the ultimate prize!",
+                7: "Legendary streak! Maximum bonus unlocked!"
+            };
+            showModal(`Day ${newStreak} Claimed!`, `Success! +$${cashEarned.toFixed(2)} added to your wallet.\n${messages[newStreak] || "Keep up the great work!"}`);
             fetchUserData(user);
         }
 
@@ -941,12 +1254,14 @@
                 document.getElementById('auth-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
                 document.getElementById('tasks-section').style.display = 'none';
+                document.getElementById('game-section').style.display = 'none';
                 document.getElementById('profile-section').style.display = 'none';
                 fetchUserData(user);
             } else {
                 document.getElementById('auth-section').style.display = 'block';
                 document.getElementById('dashboard-section').style.display = 'none';
                 document.getElementById('tasks-section').style.display = 'none';
+                document.getElementById('game-section').style.display = 'none';
                 document.getElementById('profile-section').style.display = 'none';
             }
         });
