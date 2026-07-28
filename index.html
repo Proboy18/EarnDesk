@@ -7,9 +7,9 @@
     <style>
         :root {
             --bg-color: #000000;
-            --navbar-bg: #001f3f; /* Dark navy blue top navigation bar */
+            --navbar-bg: #001f3f;
             --text-color: #ffffff;
-            --card-bg: #1e1e1e; /* Dark card background for dark mode */
+            --card-bg: #1e1e1e;
             --card-text: #ffffff;
             --card-subtext: #aaaaaa;
             --input-bg: #2a2a2a;
@@ -23,9 +23,9 @@
 
         [data-theme="light"] {
             --bg-color: #f4f7f6;
-            --navbar-bg: #001f3f; /* Keeps top bar dark navy blue in light mode too */
+            --navbar-bg: #001f3f;
             --text-color: #121212;
-            --card-bg: #ffffff; /* White card background for light mode */
+            --card-bg: #ffffff;
             --card-text: #121212;
             --card-subtext: #666666;
             --input-bg: #ffffff;
@@ -72,6 +72,10 @@
             padding: 0;
             width: auto;
             margin: 0;
+            transition: transform 0.2s ease;
+        }
+        .menu-icon:active {
+            transform: scale(0.9);
         }
         .brand-logo {
             font-size: 20px;
@@ -129,7 +133,7 @@
             left: 0;
             background-color: var(--sidebar-bg);
             overflow-x: hidden;
-            transition: 0.3s;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             padding-top: 60px;
             box-shadow: 2px 0 10px rgba(0,0,0,0.5);
             white-space: nowrap;
@@ -140,7 +144,7 @@
             font-size: 18px;
             color: var(--text-color);
             display: block;
-            transition: 0.2s;
+            transition: background-color 0.2s;
             cursor: pointer;
             width: 230px;
         }
@@ -156,7 +160,7 @@
             width: auto;
         }
 
-        /* Toggle Switch Menu Item Style with spacing */
+        /* Toggle Switch Menu Item Style */
         .sidebar-toggle-container {
             padding: 12px 25px;
             display: flex;
@@ -187,7 +191,7 @@
             cursor: pointer;
             top: 0; left: 0; right: 0; bottom: 0;
             background-color: #6c757d;
-            transition: .3s;
+            transition: background-color 0.3s;
             border-radius: 34px;
         }
         .slider:before {
@@ -198,7 +202,7 @@
             left: 3px;
             bottom: 3px;
             background-color: white;
-            transition: .3s;
+            transition: transform 0.3s;
             border-radius: 50%;
         }
         input:checked + .slider {
@@ -206,6 +210,34 @@
         }
         input:checked + .slider:before {
             transform: translateX(24px);
+        }
+
+        /* Custom Keyframe Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes subtlePulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(0, 123, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+            }
+        }
+
+        .animate-fade {
+            animation: fadeInUp 0.4s ease forwards;
         }
 
         /* Main Container */
@@ -225,7 +257,7 @@
             margin-top: 10px;
         }
 
-        /* Red Mark Area: Welcome Header Bar */
+        /* Welcome Header Bar */
         .welcome-top-bar {
             padding: 10px 4px 5px 4px;
             margin-bottom: 5px;
@@ -241,7 +273,7 @@
             color: var(--card-subtext);
         }
 
-        /* Blue Mark Area: Top-Right Floating Daily Reward Button */
+        /* Top-Right Floating Daily Reward Button with Pulse Effect */
         .dashboard-top-action {
             display: flex;
             justify-content: flex-end;
@@ -258,7 +290,11 @@
             cursor: pointer;
             width: auto;
             margin-top: 0;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            animation: subtlePulse 2s infinite;
+            transition: transform 0.15s ease, background-color 0.2s;
+        }
+        .daily-reward-btn:active {
+            transform: scale(0.94);
         }
 
         /* General Card Box */
@@ -301,17 +337,32 @@
             cursor: pointer;
             margin-top: 10px;
             width: 100%;
+            transition: transform 0.15s ease, opacity 0.2s;
+        }
+        button:active {
+            transform: scale(0.97);
         }
 
+        /* Streak Box Smooth Accordion Animation */
         .streak-box {
-            display: none; 
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
-            padding: 15px 10px;
+            padding: 0 10px;
             border-radius: 8px;
             margin-top: 0;
             text-align: center;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, padding 0.3s ease, margin-top 0.3s ease;
         }
+        .streak-box.open {
+            max-height: 350px;
+            opacity: 1;
+            padding: 15px 10px;
+            margin-top: 15px;
+        }
+
         .streak-grid {
             display: flex;
             justify-content: space-between;
@@ -327,14 +378,16 @@
             font-size: 10px;
             text-align: center;
             color: var(--card-text);
+            transition: transform 0.2s;
         }
         .streak-day.active {
             border-color: #28a745;
             background-color: #1e3a29;
             font-weight: bold;
+            transform: scale(1.05);
         }
 
-        /* Custom Popup Modal Styles */
+        /* Animated Custom Modal Popup */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -346,6 +399,8 @@
             justify-content: center;
             align-items: center;
             z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.25s ease;
         }
         .modal-content {
             background-color: var(--card-bg);
@@ -355,6 +410,15 @@
             max-width: 320px;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform: scale(0.8);
+            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
         }
         .modal-content p {
             font-size: 16px;
@@ -417,7 +481,7 @@
     <div class="main-container">
         <div class="container">
             <!-- Auth Section -->
-            <div id="auth-section" class="card-box">
+            <div id="auth-section" class="card-box animate-fade">
                 <h2>Welcome to EarnDesk</h2>
                 <p>Sign up or login to start earning cash.</p>
                 <input type="text" id="reg-name" placeholder="Enter your name">
@@ -429,18 +493,18 @@
 
             <!-- Dashboard Section -->
             <div id="dashboard-section" style="display: none;">
-                <!-- Red Marked Area: Welcome Header -->
-                <div class="welcome-top-bar">
+                <!-- Welcome Header -->
+                <div class="welcome-top-bar animate-fade">
                     <h2 id="user-welcome">Welcome, User!</h2>
                     <p>Manage your earnings and rewards below.</p>
                 </div>
 
-                <!-- Blue Marked Area: Top-Right Daily Reward Button -->
-                <div class="dashboard-top-action">
+                <!-- Top-Right Daily Reward Button -->
+                <div class="dashboard-top-action animate-fade">
                     <button class="daily-reward-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
                 </div>
 
-                <!-- Daily Reward Box Content (Hidden by default, opens on click) -->
+                <!-- Daily Reward Box Content (Animated Slide-Down) -->
                 <div class="streak-box" id="reward-section">
                     <p style="font-size: 14px; margin: 5px 0;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
                     
@@ -460,14 +524,14 @@
             </div>
 
             <!-- Tasks Section Placeholder -->
-            <div id="tasks-section" class="card-box" style="display: none;">
+            <div id="tasks-section" class="card-box animate-fade" style="display: none;">
                 <h2>Tasks</h2>
                 <p style="font-size: 14px; margin: 5px 0 15px 0;">Complete tasks to earn more cash.</p>
                 <p>No tasks available right now. Check back soon!</p>
             </div>
 
             <!-- Profile Section -->
-            <div id="profile-section" class="card-box" style="display: none;">
+            <div id="profile-section" class="card-box animate-fade" style="display: none;">
                 <h2>User Profile</h2>
                 <p style="font-size: 14px; margin: 5px 0 15px 0;">Manage your account details below.</p>
                 
@@ -590,20 +654,20 @@
 
         window.toggleRewardBox = function() {
             const rewardBox = document.getElementById('reward-section');
-            if (rewardBox.style.display === 'block') {
-                rewardBox.style.display = 'none';
-            } else {
-                rewardBox.style.display = 'block';
-            }
+            rewardBox.classList.toggle('open');
         }
 
         function showModal(message) {
             document.getElementById('modal-text').innerText = message;
-            document.getElementById('custom-modal').style.display = 'flex';
+            const modal = document.getElementById('custom-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
         }
 
         window.closeModal = function() {
-            document.getElementById('custom-modal').style.display = 'none';
+            const modal = document.getElementById('custom-modal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 250);
         }
 
         function getTodayDate() {
