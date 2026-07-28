@@ -123,7 +123,7 @@
             color: var(--text-color);
         }
 
-        /* Slide-out Menu */
+        /* Slide-out Menu with Fluid Animation */
         .sidebar {
             height: 100%;
             width: 0;
@@ -133,21 +133,29 @@
             left: 0;
             background-color: var(--sidebar-bg);
             overflow-x: hidden;
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             padding-top: 60px;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            box-shadow: 4px 0 15px rgba(0,0,0,0.5);
             white-space: nowrap;
         }
-        .sidebar a {
+        .sidebar a, .sidebar .sidebar-toggle-container {
             padding: 12px 25px;
             text-decoration: none;
             font-size: 18px;
             color: var(--text-color);
             display: block;
-            transition: background-color 0.2s;
+            opacity: 0;
+            transform: translateX(-15px);
+            transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.2s;
             cursor: pointer;
             width: 230px;
         }
+        /* Staggered animation delays for items inside open sidebar */
+        .sidebar.open a:nth-child(2) { opacity: 1; transform: translateX(0); transition-delay: 0.05s; }
+        .sidebar.open a:nth-child(3) { opacity: 1; transform: translateX(0); transition-delay: 0.1s; }
+        .sidebar.open a:nth-child(4) { opacity: 1; transform: translateX(0); transition-delay: 0.15s; }
+        .sidebar.open .sidebar-toggle-container { opacity: 1; transform: translateX(0); transition-delay: 0.2s; }
+
         .sidebar a:hover {
             background-color: var(--sidebar-hover);
         }
@@ -158,11 +166,12 @@
             font-size: 24px;
             cursor: pointer;
             width: auto;
+            opacity: 1 !important;
+            transform: none !important;
         }
 
         /* Toggle Switch Menu Item Style */
         .sidebar-toggle-container {
-            padding: 12px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -573,6 +582,7 @@
 
         window.toggleSidebar = function() {
             const sidebar = document.getElementById("mySidebar");
+            sidebar.classList.toggle('open');
             if (sidebar.style.width === "270px") {
                 sidebar.style.width = "0";
             } else {
