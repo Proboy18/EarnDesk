@@ -6,39 +6,41 @@
     <title>EarnDesk - Get Paid To Complete Tasks</title>
     <style>
         :root {
-            --bg-color: #000000;
-            --navbar-bg: #001f3f;
+            --bg-color: #0b0f19;
+            --navbar-bg: #111827;
             --text-color: #ffffff;
-            --card-bg: #1e1e1e;
+            --card-bg: #1f2937;
             --card-text: #ffffff;
-            --card-subtext: #aaaaaa;
-            --input-bg: #2a2a2a;
-            --input-border: #444444;
+            --card-subtext: #9ca3af;
+            --input-bg: #111827;
+            --input-border: #374151;
+            --input-focus: #3b82f6;
             --input-text: #ffffff;
-            --pill-bg: #000000;
-            --pill-border: #333333;
-            --sidebar-bg: #121212;
-            --sidebar-hover: #222222;
+            --pill-bg: #111827;
+            --pill-border: #374151;
+            --sidebar-bg: #111827;
+            --sidebar-hover: #1f2937;
         }
 
         [data-theme="light"] {
-            --bg-color: #f4f7f6;
-            --navbar-bg: #001f3f;
-            --text-color: #121212;
+            --bg-color: #f3f4f6;
+            --navbar-bg: #ffffff;
+            --text-color: #111827;
             --card-bg: #ffffff;
-            --card-text: #121212;
-            --card-subtext: #666666;
-            --input-bg: #ffffff;
-            --input-border: #cccccc;
-            --input-text: #121212;
+            --card-text: #111827;
+            --card-subtext: #6b7280;
+            --input-bg: #f9fafb;
+            --input-border: #d1d5db;
+            --input-focus: #3b82f6;
+            --input-text: #111827;
             --pill-bg: #ffffff;
-            --pill-border: #cccccc;
+            --pill-border: #e5e7eb;
             --sidebar-bg: #ffffff;
-            --sidebar-hover: #f1f1f1;
+            --sidebar-hover: #f3f4f6;
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -53,9 +55,9 @@
             justify-content: space-between;
             align-items: center;
             background-color: var(--navbar-bg);
-            padding: 12px 16px;
-            color: #ffffff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            padding: 14px 20px;
+            color: var(--text-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             transition: background-color 0.3s;
         }
         .nav-left {
@@ -64,11 +66,11 @@
             gap: 15px;
         }
         .menu-icon {
-            font-size: 24px;
+            font-size: 22px;
             cursor: pointer;
             background: none;
             border: none;
-            color: #ffffff;
+            color: var(--text-color);
             padding: 0;
             width: auto;
             margin: 0;
@@ -78,10 +80,9 @@
             transform: scale(0.9);
         }
         .brand-logo {
-            font-size: 20px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
         }
         .nav-right {
             display: flex;
@@ -100,9 +101,9 @@
             transition: background-color 0.3s, border-color 0.3s;
         }
         .earnings-logo-icon {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: bold;
-            color: #28a745;
+            color: #10b981;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -112,18 +113,18 @@
             flex-direction: column;
         }
         .earnings-label {
-            font-size: 10px;
-            color: #94a3b8;
-            font-weight: bold;
+            font-size: 9px;
+            color: var(--card-subtext);
+            font-weight: 700;
             letter-spacing: 0.5px;
         }
         .earnings-amount {
-            font-size: 14px;
-            font-weight: bold;
+            font-size: 13px;
+            font-weight: 700;
             color: var(--text-color);
         }
 
-        /* Slide-out Menu with Fluid Animation */
+        /* Slide-out Sidebar Menu */
         .sidebar {
             height: 100%;
             width: 0;
@@ -135,13 +136,16 @@
             overflow-x: hidden;
             transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             padding-top: 60px;
-            box-shadow: 4px 0 15px rgba(0,0,0,0.5);
+            box-shadow: 4px 0 15px rgba(0,0,0,0.3);
             white-space: nowrap;
+        }
+        .sidebar.open {
+            width: 270px;
         }
         .sidebar a, .sidebar .sidebar-toggle-container {
             padding: 12px 25px;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 16px;
             color: var(--text-color);
             display: block;
             opacity: 0;
@@ -169,99 +173,186 @@
             transform: none !important;
         }
 
-        /* Toggle Switch Menu Item Style */
         .sidebar-toggle-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 18px;
+            font-size: 16px;
             color: var(--text-color);
             width: 250px;
             box-sizing: border-box;
             gap: 15px;
         }
 
-        /* Toggle Switch CSS */
+        /* Toggle Switch */
         .switch {
             position: relative;
             display: inline-block;
-            width: 50px;
-            height: 26px;
+            width: 44px;
+            height: 24px;
             flex-shrink: 0;
         }
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
             position: absolute;
             cursor: pointer;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #6c757d;
+            background-color: #4b5563;
             transition: background-color 0.3s;
             border-radius: 34px;
         }
         .slider:before {
             position: absolute;
             content: "";
-            height: 20px;
-            width: 20px;
+            height: 18px;
+            width: 18px;
             left: 3px;
             bottom: 3px;
             background-color: white;
             transition: transform 0.3s;
             border-radius: 50%;
         }
-        input:checked + .slider {
-            background-color: #007bff;
-        }
-        input:checked + .slider:before {
-            transform: translateX(24px);
-        }
+        input:checked + .slider { background-color: #3b82f6; }
+        input:checked + .slider:before { transform: translateX(20px); }
 
-        /* Custom Keyframe Animations */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes subtlePulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4); }
-            70% { box-shadow: 0 0 0 8px rgba(0, 123, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
         }
 
         .animate-fade {
             animation: fadeInUp 0.4s ease forwards;
         }
 
-        /* Main Container */
+        /* Layout Container */
         .main-container {
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            padding: 20px;
+            align-items: center;
+            padding: 24px 16px;
+            min-height: calc(100vh - 80px);
+            box-sizing: border-box;
         }
         .container {
-            background-color: transparent;
-            padding: 0;
-            box-shadow: none;
             width: 100%;
-            max-width: 480px;
-            box-sizing: border-box;
-            margin-top: 10px;
+            max-width: 400px;
         }
 
-        /* Welcome Header Bar */
+        /* Professional Card Boxes */
+        .auth-card, .card-box {
+            background-color: var(--card-bg);
+            padding: 30px 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, color 0.3s;
+            border: 1px solid var(--input-border);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .auth-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 6px 0;
+            color: var(--card-text);
+            letter-spacing: -0.5px;
+        }
+        .auth-header p {
+            font-size: 14px;
+            color: var(--card-subtext);
+            margin: 0;
+        }
+
+        /* Tab Switcher */
+        .auth-tabs {
+            display: flex;
+            background-color: var(--input-bg);
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 20px;
+            border: 1px solid var(--input-border);
+        }
+        .auth-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--card-subtext);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            margin-top: 0;
+            width: auto;
+        }
+        .auth-tab.active {
+            background-color: var(--card-bg);
+            color: var(--card-text);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .input-group {
+            margin-bottom: 14px;
+        }
+        .input-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--card-text);
+            margin-bottom: 6px;
+        }
+        input {
+            width: 100%;
+            padding: 11px 14px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            color: var(--input-text);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            margin: 0;
+        }
+        input:focus {
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .auth-btn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 18px;
+            transition: background-color 0.2s, transform 0.1s ease;
+        }
+        .auth-btn:hover { background-color: #2563eb; }
+        .auth-btn:active { transform: scale(0.98); }
+        .auth-btn.login-btn { background-color: #10b981; }
+        .auth-btn.login-btn:hover { background-color: #059669; }
+
+        /* Dashboard & Reward Elements */
         .welcome-top-bar {
-            padding: 10px 4px 5px 4px;
+            padding: 4px 4px 10px 4px;
             margin-bottom: 5px;
         }
         .welcome-top-bar h2 {
@@ -275,77 +366,27 @@
             color: var(--card-subtext);
         }
 
-        /* Top-Right Floating Daily Reward Button */
         .dashboard-top-action {
             display: flex;
             justify-content: flex-end;
             margin-bottom: 15px;
         }
         .daily-reward-btn {
-            background-color: #007bff;
+            background-color: #3b82f6;
             color: white;
             border: none;
             padding: 8px 16px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 13px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             width: auto;
             margin-top: 0;
             animation: subtlePulse 2s infinite;
             transition: transform 0.15s ease, background-color 0.2s;
         }
-        .daily-reward-btn:active {
-            transform: scale(0.94);
-        }
+        .daily-reward-btn:active { transform: scale(0.94); }
 
-        /* General Card Box */
-        .card-box {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            margin-bottom: 15px;
-            transition: background-color 0.3s;
-        }
-
-        h2 {
-            font-size: 20px;
-            margin-bottom: 5px;
-            color: var(--card-text);
-        }
-        p {
-            color: var(--card-subtext);
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            background-color: var(--input-bg);
-            border: 1px solid var(--input-border);
-            border-radius: 6px;
-            font-size: 16px;
-            box-sizing: border-box;
-            color: var(--input-text);
-            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-            width: 100%;
-            transition: transform 0.15s ease, opacity 0.2s;
-        }
-        button:active {
-            transform: scale(0.97);
-        }
-
-        /* Streak Box Smooth Accordion Animation */
         .streak-box {
             max-height: 0;
             overflow: hidden;
@@ -353,7 +394,7 @@
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
             padding: 0 10px;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-top: 0;
             text-align: center;
             transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, padding 0.3s ease, margin-top 0.3s ease;
@@ -368,14 +409,14 @@
         .streak-grid {
             display: flex;
             justify-content: space-between;
-            gap: 3px;
+            gap: 4px;
             margin: 15px 0;
         }
         .streak-day {
             background: var(--card-bg);
             border: 1px solid var(--input-border);
-            border-radius: 4px;
-            padding: 6px 1px;
+            border-radius: 6px;
+            padding: 6px 2px;
             flex: 1;
             font-size: 10px;
             text-align: center;
@@ -383,20 +424,86 @@
             transition: transform 0.2s;
         }
         .streak-day.active {
-            border-color: #28a745;
-            background-color: #1e3a29;
+            border-color: #10b981;
+            background-color: rgba(16, 185, 129, 0.1);
             font-weight: bold;
             transform: scale(1.05);
+        }
+
+        /* Profile Specific Elements */
+        .profile-header-flex {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--input-border);
+        }
+        .profile-avatar-placeholder {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+            flex-shrink: 0;
+        }
+        .profile-user-titles h3 {
+            font-size: 16px;
+            margin: 0 0 3px 0;
+            color: var(--card-text);
+        }
+        .profile-user-titles p {
+            font-size: 12px;
+            margin: 0;
+            color: var(--card-subtext);
+        }
+
+        .btn-primary-custom {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 11px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 6px;
+            transition: background-color 0.2s, transform 0.1s ease;
+        }
+        .btn-primary-custom:hover { background-color: #2563eb; }
+        .btn-primary-custom:active { transform: scale(0.98); }
+
+        .btn-danger-custom {
+            background-color: transparent;
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 11px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 24px;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .btn-danger-custom:hover {
+            background-color: rgba(239, 68, 68, 0.08);
+            border-color: #ef4444;
         }
 
         /* Smaller Theme-Adaptive Custom Modal Popup */
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
             justify-content: center;
             align-items: center;
@@ -411,45 +518,29 @@
             width: 80%;
             max-width: 280px;
             text-align: center;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             transform: scale(0.85);
             transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s, color 0.3s;
+            border: 1px solid var(--input-border);
         }
-        .modal-overlay.show {
-            display: flex;
-            opacity: 1;
-        }
-        .modal-overlay.show .modal-content {
-            transform: scale(1);
-        }
-        .modal-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--card-text);
-            margin-bottom: 8px;
-        }
-        .modal-desc {
-            font-size: 13px;
-            color: var(--card-subtext);
-            margin-bottom: 18px;
-            line-height: 1.4;
-        }
+        .modal-overlay.show { display: flex; opacity: 1; }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-title { font-size: 17px; font-weight: 700; color: var(--card-text); margin-bottom: 8px; }
+        .modal-desc { font-size: 13px; color: var(--card-subtext); margin-bottom: 18px; line-height: 1.4; }
         .modal-btn {
             background-color: transparent;
-            color: #007bff;
+            color: #3b82f6;
             border: none;
             padding: 6px 0;
-            font-size: 15px;
-            font-weight: bold;
+            font-size: 14px;
+            font-weight: 700;
             width: 100%;
             cursor: pointer;
             border-top: 1px solid var(--input-border);
             margin-top: 5px;
             transition: opacity 0.2s;
         }
-        .modal-btn:hover {
-            opacity: 0.8;
-        }
+        .modal-btn:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -490,31 +581,48 @@
     <!-- Main Content Container -->
     <div class="main-container">
         <div class="container">
-            <!-- Auth Section -->
-            <div id="auth-section" class="card-box animate-fade">
-                <h2>Welcome to EarnDesk</h2>
-                <p>Sign up or login to start earning cash.</p>
-                <input type="text" id="reg-name" placeholder="Enter your name">
-                <input type="email" id="email" placeholder="Enter email">
-                <input type="password" id="password" placeholder="Enter password">
-                <button onclick="register()">Sign Up</button>
-                <button onclick="login()" style="background-color: #28a745;">Login</button>
+            
+            <!-- Professional Auth Section with Tab Switcher -->
+            <div id="auth-section" class="auth-card animate-fade">
+                <div class="auth-header">
+                    <h2 id="auth-title">Welcome to EarnDesk</h2>
+                    <p id="auth-subtitle">Sign up or login to start earning cash.</p>
+                </div>
+
+                <div class="auth-tabs">
+                    <button class="auth-tab active" id="tab-signup" onclick="switchAuthMode('signup')">Sign Up</button>
+                    <button class="auth-tab" id="tab-login" onclick="switchAuthMode('login')">Login</button>
+                </div>
+
+                <div class="input-group" id="name-group">
+                    <label class="input-label">Full Name</label>
+                    <input type="text" id="reg-name" placeholder="Enter your name">
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">Email Address</label>
+                    <input type="email" id="email" placeholder="name@example.com">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Password</label>
+                    <input type="password" id="password" placeholder="••••••••">
+                </div>
+
+                <button id="auth-submit-btn" class="auth-btn" onclick="handleAuth()">Create Account</button>
             </div>
 
             <!-- Dashboard Section -->
             <div id="dashboard-section" style="display: none;">
-                <!-- Welcome Header -->
                 <div class="welcome-top-bar animate-fade">
                     <h2 id="user-welcome">Welcome, User!</h2>
                     <p>Manage your earnings and rewards below.</p>
                 </div>
 
-                <!-- Top-Right Daily Reward Button -->
                 <div class="dashboard-top-action animate-fade">
                     <button class="daily-reward-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
                 </div>
 
-                <!-- Daily Reward Box Content -->
                 <div class="streak-box" id="reward-section">
                     <p style="font-size: 14px; margin: 5px 0;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
                     
@@ -529,7 +637,7 @@
                     </div>
 
                     <p id="streak-status" style="margin: 10px 0; font-size: 13px; font-weight: 500;">Checking status...</p>
-                    <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none; font-weight: bold; padding: 10px;">Claim Daily Reward!</button>
+                    <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #f59e0b; color: white; display: none; font-weight: bold; padding: 10px; border-radius: 8px; border:none; width:100%; cursor:pointer;">Claim Daily Reward!</button>
                 </div>
             </div>
 
@@ -540,21 +648,35 @@
                 <p>No tasks available right now. Check back soon!</p>
             </div>
 
-            <!-- Profile Section -->
+            <!-- Profile Section (Redesigned) -->
             <div id="profile-section" class="card-box animate-fade" style="display: none;">
-                <h2>User Profile</h2>
-                <p style="font-size: 14px; margin: 5px 0 15px 0;">Manage your account details below.</p>
-                
-                <label style="font-size: 12px; font-weight: bold; display: block; text-align: left; color: var(--card-subtext);">Username</label>
-                <input type="text" id="profile-name-input" placeholder="Enter new username">
-                <button onclick="updateUsername()" style="background-color: #28a745; margin-top: 5px;">Update Username</button>
+                <div class="profile-header-flex">
+                    <div class="profile-avatar-placeholder" id="profile-initials">U</div>
+                    <div class="profile-user-titles">
+                        <h3 id="profile-display-name">User Account</h3>
+                        <p id="profile-display-email">name@example.com</p>
+                    </div>
+                </div>
 
-                <button onclick="logout()" style="background-color: #dc3545; margin-top: 25px;">Logout</button>
+                <div class="input-group">
+                    <label class="input-label">Username</label>
+                    <input type="text" id="profile-name-input" placeholder="Enter new username">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Email Address</label>
+                    <input type="email" id="profile-email-input" disabled placeholder="Email address">
+                </div>
+
+                <button class="btn-primary-custom" onclick="updateUsername()">Save Changes</button>
+
+                <button class="btn-danger-custom" onclick="logout()">Log Out</button>
             </div>
+
         </div>
     </div>
 
-    <!-- Custom Popup Modal with Theme Support and Day Encouragement Messages -->
+    <!-- Custom Popup Modal with Day Encouragements -->
     <div class="modal-overlay" id="custom-modal">
         <div class="modal-content">
             <div class="modal-title" id="modal-title">Day 1 Claimed!</div>
@@ -582,14 +704,46 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        window.toggleSidebar = function() {
-            const sidebar = document.getElementById("mySidebar");
-            sidebar.classList.toggle('open');
-            if (sidebar.style.width === "270px") {
-                sidebar.style.width = "0";
+        let currentMode = 'signup';
+
+        window.switchAuthMode = function(mode) {
+            currentMode = mode;
+            const nameGroup = document.getElementById('name-group');
+            const submitBtn = document.getElementById('auth-submit-btn');
+            const tabSignup = document.getElementById('tab-signup');
+            const tabLogin = document.getElementById('tab-login');
+            const authTitle = document.getElementById('auth-title');
+            const authSubtitle = document.getElementById('auth-subtitle');
+
+            if (mode === 'signup') {
+                nameGroup.style.display = 'block';
+                submitBtn.innerText = 'Create Account';
+                submitBtn.className = 'auth-btn';
+                tabSignup.classList.add('active');
+                tabLogin.classList.remove('active');
+                authTitle.innerText = 'Create Account';
+                authSubtitle.innerText = 'Sign up to start earning cash instantly.';
             } else {
-                sidebar.style.width = "270px";
+                nameGroup.style.display = 'none';
+                submitBtn.innerText = 'Login to Dashboard';
+                submitBtn.className = 'auth-btn login-btn';
+                tabLogin.classList.add('active');
+                tabSignup.classList.remove('active');
+                authTitle.innerText = 'Welcome Back';
+                authSubtitle.innerText = 'Enter your credentials to access your account.';
             }
+        }
+
+        window.handleAuth = function() {
+            if (currentMode === 'signup') {
+                register();
+            } else {
+                login();
+            }
+        }
+
+        window.toggleSidebar = function() {
+            document.getElementById("mySidebar").classList.toggle('open');
         }
 
         window.showSection = function(sectionId) {
@@ -603,7 +757,6 @@
         window.toggleTheme = function() {
             const htmlTag = document.documentElement;
             const checkbox = document.getElementById('theme-checkbox');
-            
             if (checkbox.checked) {
                 htmlTag.removeAttribute('data-theme');
             } else {
@@ -616,10 +769,7 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            if (!name) {
-                alert("Please enter your name!");
-                return;
-            }
+            if (!name) { alert("Please enter your name!"); return; }
 
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -631,9 +781,7 @@
                     streak: 0,
                     lastLoginDate: ""
                 });
-            } catch (error) {
-                alert(error.message);
-            }
+            } catch (error) { alert(error.message); }
         }
 
         window.login = function() {
@@ -643,24 +791,20 @@
                 .catch((error) => { alert(error.message); });
         }
 
-        window.logout = function() {
-            signOut(auth);
-        }
+        window.logout = function() { signOut(auth); }
 
         window.updateUsername = async function() {
             const user = auth.currentUser;
             if (!user) return;
-
             const newName = document.getElementById('profile-name-input').value;
-            if (!newName) {
-                alert("Please enter a username!");
-                return;
-            }
+            if (!newName) { alert("Please enter a username!"); return; }
 
             const docRef = doc(db, "users", user.uid);
             await updateDoc(docRef, { name: newName });
             
             document.getElementById('user-welcome').innerText = "Welcome, " + newName + "!";
+            document.getElementById('profile-display-name').innerText = newName;
+            document.getElementById('profile-initials').innerText = newName.charAt(0).toUpperCase();
             alert("Username updated successfully!");
         }
 
@@ -671,8 +815,6 @@
 
         function showModal(streakDay, cashAmount) {
             document.getElementById('modal-title').innerText = `Day ${streakDay} Claimed!`;
-            
-            // Encouragement messages mapping for 1 to 7 days
             const messages = {
                 1: "Keep it up!",
                 2: "You are on fire!",
@@ -682,7 +824,6 @@
                 6: "Almost at the ultimate prize!",
                 7: "Legendary streak! Maximum bonus unlocked!"
             };
-
             const encouragement = messages[streakDay] || "Keep up the great work!";
             document.getElementById('modal-text').innerText = `Success! +$${cashAmount.toFixed(2)} added to your wallet.\n${encouragement} (Streak Day ${streakDay}/7)`;
 
@@ -697,10 +838,7 @@
             setTimeout(() => modal.style.display = 'none', 250);
         }
 
-        function getTodayDate() {
-            return new Date().toISOString().split('T')[0];
-        }
-
+        function getTodayDate() { return new Date().toISOString().split('T')[0]; }
         function getYesterdayDate() {
             const date = new Date();
             date.setDate(date.getDate() - 1);
@@ -716,10 +854,15 @@
                 const currentBalance = data.balance || 0;
                 const currentStreak = data.streak || 0;
                 const userName = data.name || "User";
+                const userEmail = data.email || user.email;
 
                 document.getElementById('balance').innerText = "$" + currentBalance.toFixed(2);
                 document.getElementById('user-welcome').innerText = "Welcome, " + userName + "!";
                 document.getElementById('profile-name-input').value = userName;
+                document.getElementById('profile-display-name').innerText = userName;
+                document.getElementById('profile-display-email').innerText = userEmail;
+                document.getElementById('profile-email-input').value = userEmail;
+                document.getElementById('profile-initials').innerText = userName.charAt(0).toUpperCase();
                 document.getElementById('streak-count').innerText = currentStreak;
 
                 for (let i = 1; i <= 7; i++) {
@@ -736,7 +879,6 @@
                 const today = getTodayDate();
                 const yesterday = getYesterdayDate();
                 const lastLogin = data.lastLoginDate || "";
-
                 const claimBtn = document.getElementById('claim-btn');
                 const streakStatus = document.getElementById('streak-status');
 
@@ -768,7 +910,6 @@
         window.claimDailyReward = async function() {
             const user = auth.currentUser;
             if (!user) return;
-
             const docRef = doc(db, "users", user.uid);
             const docSnap = await getDoc(docRef);
             if (!docSnap.exists()) return;
@@ -781,13 +922,10 @@
             let newStreak = 1;
             if (lastLogin === yesterday) {
                 newStreak = (data.streak || 0) + 1;
-                if (newStreak > 7) {
-                    newStreak = 1; 
-                }
+                if (newStreak > 7) newStreak = 1; 
             }
 
             const cashEarned = newStreak * 0.01;
-
             await updateDoc(docRef, {
                 balance: increment(cashEarned),
                 streak: newStreak,
@@ -795,7 +933,6 @@
             });
 
             showModal(newStreak, cashEarned);
-
             fetchUserData(user);
         }
 
