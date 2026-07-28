@@ -216,16 +216,25 @@
             padding: 20px;
         }
         .container {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            background-color: transparent;
+            padding: 0;
+            box-shadow: none;
             width: 100%;
             max-width: 480px;
             box-sizing: border-box;
             margin-top: 10px;
+        }
+
+        /* Standalone Cards */
+        .card-box {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
             transition: background-color 0.3s;
         }
+
         h2 {
             font-size: 20px;
             margin-bottom: 5px;
@@ -258,27 +267,33 @@
             width: 100%;
         }
 
-        /* Dashboard Top Layout Header with improved separation */
-        .dashboard-header {
+        /* Separate Welcome Box Layout */
+        .welcome-card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            gap: 15px;
         }
-        .dashboard-header h2 {
+        .welcome-card-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        /* Separate Daily Reward Box Layout */
+        .daily-reward-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .daily-reward-card h3 {
             margin: 0;
             font-size: 16px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            flex-shrink: 1;
+            color: var(--card-text);
         }
         .daily-reward-btn {
             background-color: #007bff;
             color: white;
             border: none;
-            padding: 7px 12px;
+            padding: 8px 14px;
             border-radius: 6px;
             font-size: 13px;
             font-weight: bold;
@@ -286,7 +301,6 @@
             width: auto;
             margin-top: 0;
             white-space: nowrap;
-            flex-shrink: 0;
         }
 
         .streak-box {
@@ -295,7 +309,7 @@
             border: 1px solid var(--input-border);
             padding: 15px 10px;
             border-radius: 8px;
-            margin: 15px 0;
+            margin-top: 15px;
             text-align: center;
         }
         .streak-grid {
@@ -403,7 +417,7 @@
     <div class="main-container">
         <div class="container">
             <!-- Auth Section -->
-            <div id="auth-section">
+            <div id="auth-section" class="card-box">
                 <h2>Welcome to EarnDesk</h2>
                 <p>Sign up or login to start earning cash.</p>
                 <input type="text" id="reg-name" placeholder="Enter your name">
@@ -415,39 +429,49 @@
 
             <!-- Dashboard Section -->
             <div id="dashboard-section" style="display: none;">
-                <div class="dashboard-header">
-                    <h2 id="user-welcome">Welcome, User!</h2>
-                    <button class="daily-reward-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
+                <!-- Welcome Card Box -->
+                <div class="card-box">
+                    <div class="welcome-card-header">
+                        <h2 id="user-welcome">Welcome, User!</h2>
+                    </div>
+                    <p style="font-size: 13px; margin: 5px 0 0 0;">Manage your earnings and activity below.</p>
                 </div>
-                <p style="font-size: 13px; margin: 0 0 15px 0;">Manage your earnings and rewards below.</p>
 
-                <div class="streak-box" id="reward-section">
-                    <p style="font-size: 14px; margin: 5px 0;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
-                    
-                    <div class="streak-grid" id="streak-grid-container">
-                        <div class="streak-day" id="day-1">1d<br>$0.01</div>
-                        <div class="streak-day" id="day-2">2d<br>$0.02</div>
-                        <div class="streak-day" id="day-3">3d<br>$0.03</div>
-                        <div class="streak-day" id="day-4">4d<br>$0.04</div>
-                        <div class="streak-day" id="day-5">5d<br>$0.05</div>
-                        <div class="streak-day" id="day-6">6d<br>$0.06</div>
-                        <div class="streak-day" id="day-7">7d<br>$0.07</div>
+                <!-- Daily Reward Card Box -->
+                <div class="card-box">
+                    <div class="daily-reward-card">
+                        <h3>Daily Reward</h3>
+                        <button class="daily-reward-btn" onclick="toggleRewardBox()">🎁 Claim</button>
                     </div>
 
-                    <p id="streak-status" style="margin: 10px 0; font-size: 13px; font-weight: 500;">Checking status...</p>
-                    <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none; font-weight: bold; padding: 10px;">Claim Daily Reward!</button>
+                    <div class="streak-box" id="reward-section">
+                        <p style="font-size: 14px; margin: 5px 0;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
+                        
+                        <div class="streak-grid" id="streak-grid-container">
+                            <div class="streak-day" id="day-1">1d<br>$0.01</div>
+                            <div class="streak-day" id="day-2">2d<br>$0.02</div>
+                            <div class="streak-day" id="day-3">3d<br>$0.03</div>
+                            <div class="streak-day" id="day-4">4d<br>$0.04</div>
+                            <div class="streak-day" id="day-5">5d<br>$0.05</div>
+                            <div class="streak-day" id="day-6">6d<br>$0.06</div>
+                            <div class="streak-day" id="day-7">7d<br>$0.07</div>
+                        </div>
+
+                        <p id="streak-status" style="margin: 10px 0; font-size: 13px; font-weight: 500;">Checking status...</p>
+                        <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none; font-weight: bold; padding: 10px;">Claim Daily Reward!</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Tasks Section Placeholder -->
-            <div id="tasks-section" style="display: none;">
+            <div id="tasks-section" class="card-box" style="display: none;">
                 <h2>Tasks</h2>
                 <p style="font-size: 14px; margin: 5px 0 15px 0;">Complete tasks to earn more cash.</p>
                 <p>No tasks available right now. Check back soon!</p>
             </div>
 
             <!-- Profile Section -->
-            <div id="profile-section" style="display: none;">
+            <div id="profile-section" class="card-box" style="display: none;">
                 <h2>User Profile</h2>
                 <p style="font-size: 14px; margin: 5px 0 15px 0;">Manage your account details below.</p>
                 
