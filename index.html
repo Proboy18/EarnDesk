@@ -225,7 +225,43 @@
             margin-top: 10px;
         }
 
-        /* Standalone Cards */
+        /* Red Mark Area: Welcome Header Bar */
+        .welcome-top-bar {
+            padding: 10px 4px 5px 4px;
+            margin-bottom: 5px;
+        }
+        .welcome-top-bar h2 {
+            font-size: 18px;
+            margin: 0;
+            color: var(--text-color);
+        }
+        .welcome-top-bar p {
+            font-size: 13px;
+            margin: 3px 0 0 0;
+            color: var(--card-subtext);
+        }
+
+        /* Blue Mark Area: Top-Right Floating Daily Reward Button */
+        .dashboard-top-action {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+        .daily-reward-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            width: auto;
+            margin-top: 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        /* General Card Box */
         .card-box {
             background-color: var(--card-bg);
             padding: 20px;
@@ -267,49 +303,13 @@
             width: 100%;
         }
 
-        /* Separate Welcome Box Layout */
-        .welcome-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .welcome-card-header h2 {
-            margin: 0;
-            font-size: 18px;
-        }
-
-        /* Separate Daily Reward Box Layout */
-        .daily-reward-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .daily-reward-card h3 {
-            margin: 0;
-            font-size: 16px;
-            color: var(--card-text);
-        }
-        .daily-reward-btn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            width: auto;
-            margin-top: 0;
-            white-space: nowrap;
-        }
-
         .streak-box {
             display: none; 
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
             padding: 15px 10px;
             border-radius: 8px;
-            margin-top: 15px;
+            margin-top: 0;
             text-align: center;
         }
         .streak-grid {
@@ -429,37 +429,33 @@
 
             <!-- Dashboard Section -->
             <div id="dashboard-section" style="display: none;">
-                <!-- Welcome Card Box -->
-                <div class="card-box">
-                    <div class="welcome-card-header">
-                        <h2 id="user-welcome">Welcome, User!</h2>
-                    </div>
-                    <p style="font-size: 13px; margin: 5px 0 0 0;">Manage your earnings and activity below.</p>
+                <!-- Red Marked Area: Welcome Header -->
+                <div class="welcome-top-bar">
+                    <h2 id="user-welcome">Welcome, User!</h2>
+                    <p>Manage your earnings and rewards below.</p>
                 </div>
 
-                <!-- Daily Reward Card Box -->
-                <div class="card-box">
-                    <div class="daily-reward-card">
-                        <h3>Daily Reward</h3>
-                        <button class="daily-reward-btn" onclick="toggleRewardBox()">🎁 Claim</button>
+                <!-- Blue Marked Area: Top-Right Daily Reward Button -->
+                <div class="dashboard-top-action">
+                    <button class="daily-reward-btn" onclick="toggleRewardBox()">🎁 Daily reward</button>
+                </div>
+
+                <!-- Daily Reward Box Content (Hidden by default, opens on click) -->
+                <div class="streak-box" id="reward-section">
+                    <p style="font-size: 14px; margin: 5px 0;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
+                    
+                    <div class="streak-grid" id="streak-grid-container">
+                        <div class="streak-day" id="day-1">1d<br>$0.01</div>
+                        <div class="streak-day" id="day-2">2d<br>$0.02</div>
+                        <div class="streak-day" id="day-3">3d<br>$0.03</div>
+                        <div class="streak-day" id="day-4">4d<br>$0.04</div>
+                        <div class="streak-day" id="day-5">5d<br>$0.05</div>
+                        <div class="streak-day" id="day-6">6d<br>$0.06</div>
+                        <div class="streak-day" id="day-7">7d<br>$0.07</div>
                     </div>
 
-                    <div class="streak-box" id="reward-section">
-                        <p style="font-size: 14px; margin: 5px 0;">🔥 Login Streak: <strong id="streak-count">0</strong> Days</p>
-                        
-                        <div class="streak-grid" id="streak-grid-container">
-                            <div class="streak-day" id="day-1">1d<br>$0.01</div>
-                            <div class="streak-day" id="day-2">2d<br>$0.02</div>
-                            <div class="streak-day" id="day-3">3d<br>$0.03</div>
-                            <div class="streak-day" id="day-4">4d<br>$0.04</div>
-                            <div class="streak-day" id="day-5">5d<br>$0.05</div>
-                            <div class="streak-day" id="day-6">6d<br>$0.06</div>
-                            <div class="streak-day" id="day-7">7d<br>$0.07</div>
-                        </div>
-
-                        <p id="streak-status" style="margin: 10px 0; font-size: 13px; font-weight: 500;">Checking status...</p>
-                        <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none; font-weight: bold; padding: 10px;">Claim Daily Reward!</button>
-                    </div>
+                    <p id="streak-status" style="margin: 10px 0; font-size: 13px; font-weight: 500;">Checking status...</p>
+                    <button id="claim-btn" onclick="claimDailyReward()" style="background-color: #ffc107; color: black; display: none; font-weight: bold; padding: 10px;">Claim Daily Reward!</button>
                 </div>
             </div>
 
