@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EarnDesk - Professional Earning Platform</title>
-    <!-- AppLixir SDK Script Tag -->
-    <script src="https://cdn.applixir.com/applixir.app.v6.1.0.js" async></script>
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -863,6 +861,40 @@
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
+        /* Ad Simulation Overlay */
+        .ad-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 4000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            backdrop-filter: blur(8px);
+        }
+        .ad-box {
+            background: var(--card-bg);
+            color: var(--card-text);
+            padding: 34px 26px;
+            border-radius: 20px;
+            border: 1px solid var(--input-border);
+            max-width: 320px;
+            width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+        .ad-timer {
+            font-size: 32px;
+            font-weight: 800;
+            color: #f59e0b;
+            margin: 15px 0;
+        }
+
         /* Custom Popup Modal */
         .modal-overlay {
             display: none;
@@ -911,9 +943,6 @@
 </head>
 <body>
 
-    <!-- AppLixir Ad Container Div -->
-    <div id="applixir-ad-container"></div>
-
     <!-- Top Navigation Bar -->
     <div class="navbar">
         <div class="nav-left">
@@ -947,6 +976,16 @@
                 <input type="checkbox" id="theme-checkbox" checked onchange="toggleTheme()">
                 <span class="slider"></span>
             </label>
+        </div>
+    </div>
+
+    <!-- Simulated Rewarded Ad Overlay -->
+    <div class="ad-overlay" id="ad-overlay">
+        <div class="ad-box">
+            <h3 style="margin: 0 0 10px 0; font-size: 18px; font-weight: 800;">📺 Sponsored Ad</h3>
+            <p style="font-size: 13px; color: var(--card-subtext); margin: 0; line-height: 1.4;">Watch this brief ad to unlock your round and earn cash rewards!</p>
+            <div class="ad-timer" id="ad-timer-display">5</div>
+            <p style="font-size: 11px; color: var(--card-subtext); opacity: 0.7; margin: 0;">Please wait while the ad plays...</p>
         </div>
     </div>
 
@@ -1157,7 +1196,7 @@
                 </div>
             </div>
 
-            <!-- Profile Section -->
+            <!-- Profile Section (Updated with Gallery/File Picker) -->
             <div id="profile-section" class="card-box animate-fade" style="display: none;">
                 <div class="profile-header-flex">
                     <div class="profile-avatar-container" id="profile-avatar-box">
@@ -1344,6 +1383,7 @@
             avatarBox.innerHTML = `<span id="profile-initials">${initial}</span>`;
         }
 
+        // Local Image Preview Handler for Gallery / Files
         window.previewLocalImage = function(event) {
             const file = event.target.files[0];
             if (file) {
@@ -1379,31 +1419,34 @@
             document.getElementById('reward-section').classList.toggle('open');
         }
 
-        // AppLixir Official SDK integration replacing the old mock timer
         window.triggerAdBeforePlay = function(gameType) {
             activeGameType = gameType;
+            const adOverlay = document.getElementById('ad-overlay');
+            const timerDisplay = document.getElementById('ad-timer-display');
+            adOverlay.style.display = 'flex';
+            
+            let timeLeft = 5;
+            timerDisplay.innerText = timeLeft;
 
-            initializeAndOpenPlayer({
-                apiKey: "YOUR-API-KEY-HERE", // Replace with your actual AppLixir API Key from your dashboard
-                injectionElementId: "applixir-ad-container",
-                adStatusCallbackFn: (status) => {
-                    if (status === "ad-watched" || (status && status.type === "complete")) {
-                        if (gameType === 'guess') {
-                            document.getElementById('game-locked-view').style.display = 'none';
-                            document.getElementById('game-active-view').style.display = 'block';
-                        } else if (gameType === 'coin') {
-                            document.getElementById('coin-locked-view').style.display = 'none';
-                            document.getElementById('coin-active-view').style.display = 'block';
-                        } else if (gameType === 'wheel') {
-                            document.getElementById('wheel-locked-view').style.display = 'none';
-                            document.getElementById('wheel-active-view').style.display = 'block';
-                        }
-                    } else {
-                        alert("You must watch the full ad to play!");
+            const countdown = setInterval(() => {
+                timeLeft--;
+                timerDisplay.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    adOverlay.style.display = 'none';
+                    if (gameType === 'guess') {
+                        document.getElementById('game-locked-view').style.display = 'none';
+                        document.getElementById('game-active-view').style.display = 'block';
+                    } else if (gameType === 'coin') {
+                        document.getElementById('coin-locked-view').style.display = 'none';
+                        document.getElementById('coin-active-view').style.display = 'block';
+                    } else if (gameType === 'wheel') {
+                        document.getElementById('wheel-locked-view').style.display = 'none';
+                        document.getElementById('wheel-active-view').style.display = 'block';
                     }
                 }
-            });
-        };
+            }, 1000);
+        }
 
         // Guess Game Logic
         window.submitGuess = async function() {
@@ -1675,4 +1718,3 @@
     </script>
 </body>
 </html>
-
